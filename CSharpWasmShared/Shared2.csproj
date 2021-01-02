@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Css\main.css" />
+    <None Remove="Scripts\csharp.js" />
+    <None Remove="Scripts\nameof.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Css\main.css" />
+    <EmbeddedResource Include="Scripts\nameof.js" />
+    <EmbeddedResource Include="Scripts\csharp.js" />
+  </ItemGroup>
+
+</Project>

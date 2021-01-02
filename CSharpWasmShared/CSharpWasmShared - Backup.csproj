@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="WasmScripts\console-override.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="WasmScripts\console-override.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WasmCSS\Shared\" />
+  </ItemGroup>
+
+</Project>

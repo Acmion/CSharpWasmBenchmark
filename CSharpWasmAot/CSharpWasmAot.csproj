@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <MonoRuntimeDebuggerEnabled Condition="'$(Configuration)'=='Debug'">true</MonoRuntimeDebuggerEnabled>
+        <WasmShellMonoRuntimeExecutionMode>FullAOT</WasmShellMonoRuntimeExecutionMode>
+        <NetCoreWasmSDKUri>$(MSBuildProjectDirectory)/../Benchmarking/Assets/dotnet-runtime-wasm-7043528-21442-Release.zip</NetCoreWasmSDKUri>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Uno.Wasm.Bootstrap" Version="2.0.0-dev.69" />
+        <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="2.0.0-dev.69" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="WasmScripts/**/*.js" />
+        <EmbeddedResource Include="WasmCSS/**/*.css" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Benchmarking\Benchmarking.csproj" />
+    </ItemGroup>
+
+    <!-- Include the Wasm files from Shared before building. -->
+    <ItemGroup>
+        <CssFiles Include="$(MSBuildProjectDirectory)/../Shared/Css/**/*" />
+        <ScriptFiles Include="$(MSBuildProjectDirectory)/../Shared/Scripts/**/*" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="WasmScripts\csharp.js" />
+      <None Remove="WasmScripts\window-communication.js" />
+    </ItemGroup>
+    <Target Name="CopyFiles" BeforeTargets="BeforeBuild">
+        <Copy SourceFiles="@(CssFiles)" DestinationFolder="$(MSBuildProjectDirectory)/WasmCSS" />
+        <Copy SourceFiles="@(ScriptFiles)" DestinationFolder="$(MSBuildProjectDirectory)/WasmScripts" />
+    </Target>
+</Project>

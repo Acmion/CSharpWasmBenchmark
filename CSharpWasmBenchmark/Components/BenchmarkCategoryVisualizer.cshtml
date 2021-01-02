@@ -1,0 +1,97 @@
+﻿@model BenchmarkCategoryVisualizer
+
+@{
+    var urlNameDict = new Dictionary<string, string>()
+{
+        { "cs-runtime", "C# Runtime" },
+        { "cs-wasm-aot", "C# Wasm AOT" },
+        { "cs-wasm-interpreted", "C# Wasm Interpreted" },
+        { "js", "JavaScript" },
+        { "results", "" },
+    };
+
+    var ua = Parser.GetDefault().Parse(Context.Request.Headers["User-Agent"]).UA;
+    var browser = ua.Family + " " + ua.Major + "." + ua.Minor + "." + ua.Patch;
+    var benchmarkRuntime = urlNameDict[Context.Request.Path.Value.Split("/", StringSplitOptions.RemoveEmptyEntries).Last()];
+    var dataFileName = Model.BenchmarkCategory.Name + " " + benchmarkRuntime + " (" + browser + ").json";
+
+    if (!Model.BrowserMatters)
+    {
+        dataFileName = Model.BenchmarkCategory.Name + " " + benchmarkRuntime + ".json";
+    }
+}
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            @Model.BenchmarkCategory.Name
+            @if (Model.Interactive)
+            {
+                <button class="btn btn-lg btn-primary ml-2 d-flex align-items-center @BenchmarkCategoryVisualizer.RunBenchmarksButtonClass" id="@Model.RunBenchmarksButtonId">
+                    Run Benchmarks
+                </button>
+                <button class="btn btn-lg btn-warning ml-2 d-flex align-items-center @BenchmarkCategoryVisualizer.DownloadBenchmarkDataButtonClass" id="@Model.DownloadBenchmarkDataButtonId" disabled>
+                    Download Benchmark Data
+                </button>
+
+
+            }
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+            @foreach (var b in Model.BenchmarkCategory.Benchmarks)
+            {
+                <BenchmarkVisualizer Benchmark="b" />
+            }
+        </div>
+    </section>
+
+    @if (Model.Interactive)
+    {
+        <script type="module">
+        var runBenchmarksButton = document.getElementById("@Model.RunBenchmarksButtonId");
+        var downloadBenchmarkDataButton = document.getElementById("@Model.DownloadBenchmarkDataButtonId");
+
+        var benchmarkCategoryDataJson = "";
+        var runBenchmarksButtonInitialInnerHtml = runBenchmarksButton.innerHTML;
+
+        runBenchmarksButton.onclick = function()
+        {
+            runBenchmarksButton.disabled = true;
+            runBenchmarksButton.innerHTML = `<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>Running...`;
+
+            setTimeout(async function ()
+            {
+                await waitUntilCanStartBenchmark();
+
+                var startTime = new Date();
+                console.log("Starting @(Model.BenchmarkCategory.Name), Time: " + startTime.toISOString());
+
+                // Target function may be async, so await it.
+
+                benchmarkCategoryDataJson = await @(Model.BenchmarkCategory.Name)();
+                BenchmarkDataPlotter.plotBenchmarkCategoryDataFromJson(benchmarkCategoryDataJson);
+
+                runBenchmarksButton.disabled = false;
+                runBenchmarksButton.innerHTML = runBenchmarksButtonInitialInnerHtml;
+
+                downloadBenchmarkDataButton.disabled = false;
+
+                var endTime = new Date();
+                console.log("Ending @(Model.BenchmarkCategory.Name), Time: " + endTime.toISOString() + ", Elapsed Seconds: " + (endTime - startTime) / 1000);
+
+            }, 100);
+        };
+
+        downloadBenchmarkDataButton.onclick = function ()
+        {
+            FileHandler.downloadTextAsFile("@(dataFileName)", benchmarkCategoryDataJson);
+        };
+        </script>
+    }
+</div>

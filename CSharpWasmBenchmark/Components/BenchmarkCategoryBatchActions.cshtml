@@ -1,0 +1,37 @@
+﻿@model BenchmarkCategoryBatchActions
+
+<button class="btn btn-lg btn-primary ml-2 d-flex align-items-center run-benchmarks-button" id="run-all-benchmarks">
+    Run All Benchmarks
+</button>
+<button class="btn btn-lg btn-warning ml-2 d-flex align-items-center download-benchmark-data-button" disabled id="download-all-benchmarks">
+    Download All Benchmark Data
+</button>
+
+<CshtmlBody>
+    <script>
+        document.getElementById("run-all-benchmarks").onclick = function ()
+        {
+            var runBenchmarkButtons = document.querySelectorAll(".@BenchmarkCategoryVisualizer.RunBenchmarksButtonClass");
+
+            for (var rbb of runBenchmarkButtons)
+            {
+                rbb.click();
+            }
+
+            document.getElementById("download-all-benchmarks").disabled = false;
+        };
+
+        document.getElementById("download-all-benchmarks").onclick = function ()
+        {
+            var downloadBenchmarksDataButtons = document.querySelectorAll(".@BenchmarkCategoryVisualizer.DownloadBenchmarkDataButtonClass");
+
+            for (var dbdb of downloadBenchmarksDataButtons)
+            {
+                if (dbdb.id != "download-all-benchmarks")
+                {
+                    dbdb.click();
+                }
+            }
+        };
+    </script>
+</CshtmlBody>

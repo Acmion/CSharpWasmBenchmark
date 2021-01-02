@@ -1,0 +1,29 @@
+﻿@model BenchmarkVisualizer
+
+<section class="indent">
+    <h4>
+        @Model.Id
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> @Html.Raw(Model.Benchmark.InitializationDescription)
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> @Html.Raw(Model.Benchmark.BenchmarkDescription)
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> @Html.Raw(Model.Benchmark.ResultDescription)
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> @Html.Raw(Model.Benchmark.ParameterDescription)
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="@Model.CSharpSourceCodeUrl">C#</a>,
+        <a href="@Model.JavaScriptSourceCodeUrl">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id=@Model.Id>Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>

@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Css\main.css" />
+    <None Remove="Scripts\csharp.js" />
+    <None Remove="Scripts\nameof.js" />
+    <None Remove="wwwroot\css\main.css" />
+    <None Remove="wwwroot\js\csharp.js" />
+    <None Remove="wwwroot\js\nameof.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Css\main.css" />
+    <EmbeddedResource Include="Scripts\csharp.js" />
+    <EmbeddedResource Include="Scripts\nameof.js" />
+    <EmbeddedResource Include="wwwroot\css\main.css" />
+    <EmbeddedResource Include="wwwroot\js\csharp.js" />
+    <EmbeddedResource Include="wwwroot\js\nameof.js" />
+  </ItemGroup>
+
+</Project>

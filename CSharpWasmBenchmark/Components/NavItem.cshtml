@@ -1,0 +1,9 @@
+﻿@model NavItem
+
+<div class="hn-item @(Model.IsActive ? "hn-active" : "")">
+    <a class="hn-link" href="@Html.Raw(Model.Href)">
+        <span class="hn-content" data-hn-content="@Model.Content">
+            @Model.Content
+        </span>
+    </a>
+</div>

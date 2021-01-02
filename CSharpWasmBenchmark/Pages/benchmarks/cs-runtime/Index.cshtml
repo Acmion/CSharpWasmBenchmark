@@ -1,0 +1,52 @@
+﻿@page
+
+<CshtmlHead>
+    <script>
+        var runningBenchmark = false;
+
+        function sleep(ms)
+        {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function waitUntilCanStartBenchmark()
+        {
+            while (runningBenchmark)
+            {
+                await sleep(100);
+            }
+        }
+    </script>
+
+    @foreach (var bc in BenchmarkCategory.All) 
+    {
+        // Generates the necessary JS functions.
+        // See Controllers/CSharpRuntimeController for the api, which is called.
+
+        <script>
+            async function @(bc.Name)()
+            {
+                runningBenchmark = true;
+
+                var res = await fetch("/api/cs-runtime?benchmarkcategory=@(bc.Name)").then(response => response.text());
+
+                runningBenchmark = false;
+
+                return res;
+            }
+        </script>
+    }
+</CshtmlHead>
+
+<h1 class="d-flex">
+    C# Runtime <BenchmarkCategoryBatchActions />
+</h1>
+
+<p>
+    C# runtime benchmarks.
+</p>
+
+@foreach (var bc in BenchmarkCategory.All)
+{
+    <BenchmarkCategoryVisualizer BenchmarkCategory="bc" BrowserMatters="false"/>
+}

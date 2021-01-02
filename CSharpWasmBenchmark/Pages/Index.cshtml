@@ -1,0 +1,218 @@
+﻿@page
+
+<section>
+    <h1 class="scroll-anchor" id="home">
+        CSharpWasmBenchmark
+    </h1>
+
+    <p>
+        CSharpWasmBenchmark is a project that benchmarks the performance of C# when compiled to Webassembly.
+        The rationale behind this analysis is to find out whether it is viable to run performance critical applications
+        written in C# in the browser and how the browser performance differs from "native" performance.
+    </p>
+    <p>
+        The performance of the following are measured: C# Runtime, C# Wasm AOT, C# Wasm Interpreted
+        and JavaScript. The JavaScript code is directly translated (as well as possible) from the C# source code,
+        which may create certain differences between the implications of the code that is executed. You should
+        always compare the source codes! The comparison between the performance of different C# execution targets
+        are likely more reliable than that of comparison with JavaScript. JavaScript was included in this analysis
+        since currently it is the standard frontend development programming language.
+    </p>
+
+    <p>
+        <strong>Note:</strong> The benchmarks may have errors in them, the C# Wasm compilation may depend on
+        stuff that is no longer considered best practice, the tools used in C# Wasm compilation may not be
+        updated to their newest and best versions and the C# and JavaScript source codes may not be equivalent.
+        Additionally, since C# Wasm is still a somewhat experimental technology these results may not reflect the
+        performance of the finalized product.
+    </p>
+
+    <section>
+        <h2>
+            Code Quality & Workflow
+        </h2>
+        <p>
+            The code quality and workflow of the benchmarks is quite good, however, the same can not be said for 
+            the rest of the infrastructure of this project. I wrote the code on a tight schedule and had to make 
+            many changes during development. Some of this is reflected in the quality, sorry :( . Still, the 
+            benchmarks should be unaffected.
+        </p>
+    </section>
+
+    <section>
+        <h2>
+            Dependencies
+        </h2>
+        <p>
+            <a href="https://github.com/unoplatform/Uno.Wasm.Bootstrap">Uno.Wasm.Bootstrap</a> provides an
+            understandable way of AOT compiling C# to Wasm that just works. See the requirements from it's repository. Note that the
+            requirements under "Required configuration for AOT, Mixed Mode or external bitcode support compilation on Windows 10"
+            are supposed to be installed on WSL.
+        </p>
+        <p>
+            <a href="https://cshtml-component.acmion.com">CshtmlComponent</a> is used for creating the GUI components of this project.
+            The behavior of the library is quite straightforward, but it may be worthwile to skim through the documentation, in case
+            you wish to contribute.
+        </p>
+        <p>
+            <a href="https://docs.microsoft.com/en-us/aspnet/core/">ASP.NET Core</a> is used as the backend for these pages.
+        </p>
+    </section>
+
+    <section>
+        <h2>
+            Build & Execute
+        </h2>
+        <p>
+            Build the project with the Release configuration for the most trustworthy results. After building, the project
+            should be run independently without IIS Express. IIS Express does not by default serve certain file types and
+            will thus not work (unless specifically configured).
+        </p>
+    </section>
+
+    <section>
+        <h2>
+            Benchmarks
+        </h2>
+
+        <p>
+            This section describes how the benchmarks are created and executed. All benchmarks are contained within some
+            categories, for example, there is an <code>ArrayBenchmarks</code> and a <code>ListBenchmarks</code> category.
+            BenchmarkDotNet was not utilized in this project, because I wanted to ensure that the C# and JavaScript code
+            and benchmarks are doing the same things. Additionally, BenchmarkDotNet uses some complex compilation strategies,
+            which may or may not work with C# Wasm AOT.
+        </p>
+
+        <section class="indent">
+            <h3>
+                C# Benchmarks
+            </h3>
+            <p>
+                The source code of the C# benchmark executer can be found <a href="/Benchmarking/Core/BenchmarkRunner.cs">here</a>.
+                The way a C# benchmark should be defined is:
+            </p>
+            <p>
+                <ol>
+                    <li>
+                        Create a C# class <code>SomeBenchmark</code>, which inherits from <code>Benchmark</code>.
+                    </li>
+                    <li>
+                        Override some describing properties.
+                    </li>
+                    <li>
+                        Override the <code>Parameters</code> property, which is of type <code>int[]</code>.
+                        <code>SomeBenchmark</code> is initialized and executed with each of the values of <code>Parameters</code>.
+                        This means that the performance of something can be evaulated with several parameter values. For example,
+                        if <code>Parameters = new int[] { 1, 10, 100, 1000 }</code> and <code>SomeBenchmark</code> sorts a list
+                        of numbers, then the analysis can be evaluated for a list of length 1, a list of length 10, a list of length
+                        100 and a list of length 1000.
+                    </li>
+                    <li>
+                        Override the <code>public void Initialize(int parameter)</code> method. The value of <code>parameter</code> is one
+                        value from the <code>Parameters</code> array. This method is used to initialize stuff needed for the
+                        benchmark, but the performance is not evaluated.
+                    </li>
+                    <li>
+                        Override the <code>public object Execute()</code> method. This method should execute the code that is to be
+                        benchmarked. The method returns an <code>object</code>, which main purpose should be to ensure that the compiler
+                        does not remove the code within the method. The performance of this method is evaluated.
+                    </li>
+                    <li>
+                        Register <code>SomeBenchmark</code> under a <code>BenchmarkCategory</code> in <code>Benchmarking/Core/BenchmarkCategory.cs</code>.
+                        Note that you may need to define an extra category.
+                    </li>
+                </ol>
+            </p>
+        </section>
+
+        <section class="indent">
+            <h3>
+                JavaScript Benchmarks
+            </h3>
+            <p>
+                The source code of the JS benchmark executer can be found <a href="/Benchmarking/JavaScriptCore/BenchmarkRunner.js">here</a>.
+                The way a JS benchmark should be defined is:
+            </p>
+
+            <p>
+                <ol>
+                    <li>
+                        Create a JavaScript class <code>SomeBenchmark</code>. Note that the class name should be the same
+                        as the C# class name.
+                    </li>
+                    <li>
+                        No need to override describing properties. The values from C# are dynamically injected wherever needed.
+                    </li>
+                    <li>
+                        No need to define a <code>Parameters</code> array. The value from C# is dynamically injected wherever needed.
+                    </li>
+                    <li>
+                        Define the <code>function Initialize(parameter)</code> function. The behavior should be the same as the C# equivalent.
+                        This performance is not evaluated.
+                    </li>
+                    <li>
+                        Define the <code>function Execute()</code> function. The behavior should be the same as the C# equivalent.
+                        This performance is evaluated.
+                    </li>
+                    <li>
+                        No need to register this class anywhere. It is dynamically injected wherever needed.
+                    </li>
+                </ol>
+            </p>
+        </section>
+
+        <section class="indent">
+            <h3>
+                Benchmark Plots
+            </h3>
+            <p>
+                Each benchmark is executed a certain number of times for each parameter value. The mean execution times of these runs
+                represent data points, while the standard deviations represent error bars.
+            </p>
+        </section>
+    </section>
+
+    <section>
+        <h2>
+            Frontend
+        </h2>
+        <p>
+            Each execution context (C# Runtime, C# Wasm AOT, C# Wasm Interpreted, JavaScript) need a page that
+            visualize the benchmarks. The requirements of these pages are:
+            <ol>
+                <li>
+                    Define a corresponding Razor Page under the directory <code>Pages</code>.
+                </li>
+                <li>
+                    Render all benchmark categories and their respective benchmarks.
+                </li>
+                <li>
+                    Define JavaScript functions for all benchmark categories. For example, if the benchmark category
+                    is named <code>ArrayBenchmarks</code>, then the page should declare a global function named
+                    <code>ArrayBenchmarks</code>. This function should return a JSON string that contains the benchmark
+                    results. Other than the JSON string, the implementation is up to the page.
+                </li>
+                <li>
+                    Render graphs of the benchmarks, where the parameter value is on the x-axis and the time it took to
+                    execute the benchmark in milliseconds is on the y-axis. Each benchmark is executed a certain number of
+                    times for each parameter value. The each datapoint is the mean of these execution times and the errorbars
+                    are the standard deviation of these execution times.
+                </li>
+            </ol>
+        </p>
+    </section>
+
+    <section>
+        <h2>
+            Data
+        </h2>
+
+        <p>
+            Unfortunately, the benchmark data has to be downloaded manually. Maybe browser automation would be possible,
+            but I do not currently have the time to setup a system like that. Just manually execute the benchmarks and
+            download the data (by clicking a button). The data should then be stored under the <code>Benchmarks/Data</code>
+            directory.
+        </p>
+    </section>
+
+</section>
