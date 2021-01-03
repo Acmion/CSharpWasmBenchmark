@@ -1,940 +1,937 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html><head>
+    <title>
+        CSharpWasmBenchmark
+    </title>
 
-    <head>
-        <title>
-            CSharpWasmBenchmark
-        </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.acmion.com/acmion/hyper-nav/dist/hyper-nav-default.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script><style id="plotly.js-style-global"></style>
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.acmion.com/acmion/hyper-nav/dist/hyper-nav-default.min.css">
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <style id="plotly.js-style-global"></style>
+    <script src="/CSharpWasmBenchmark/wwwroot/js/benchmark-data-plotter.js"></script>
+    <script src="/CSharpWasmBenchmark/wwwroot/js/file-handler.js"></script>
+    <script src="/CSharpWasmBenchmark/wwwroot/js/math-functions.js"></script>
+    <script src="/CSharpWasmBenchmark/wwwroot/js/nameof.js"></script>
 
-        <script src="/CSharpWasmBenchmark/wwwroot/js/benchmark-data-plotter.js"></script>
-        <script src="/CSharpWasmBenchmark/wwwroot/js/file-handler.js"></script>
-        <script src="/CSharpWasmBenchmark/wwwroot/js/math-functions.js"></script>
-        <script src="/CSharpWasmBenchmark/wwwroot/js/nameof.js"></script>
+    <link rel="stylesheet" href="/CSharpWasmBenchmark/wwwroot/css/main.css">
 
-        <link rel="stylesheet" href="/CSharpWasmBenchmark/wwwroot/css/main.css">
+</head><body>
+            <header>
+                <nav class="hn-menu hn-top hn-fixed hn-shadow">
+                    <input type="checkbox" name="hn-top-state" class="hn-input-state hn-input-state-nav hn-hide-desktop" id="hn-nav-cb">
+            
+                    <div class="hn-nav container-md p-0">
+                        <div class="hn-section hn-section-brand">
+                            <div class="hn-item">
+                                <a id="hn-logo" class="hn-link" href="/">
+                                    <span class="hn-content">
+                                        <span class="acmion-logo" style="font-weight: 600;">
+                                            CSharpWasmBenchmark
+                                        </span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                            <div class="hn-spacer"></div>
 
-    </head>
-
-    <body>
-        <header>
-            <nav class="hn-menu hn-top hn-fixed hn-shadow">
-                <input type="checkbox" name="hn-top-state" class="hn-input-state hn-input-state-nav hn-hide-desktop" id="hn-nav-cb">
-
-                <div class="hn-nav container-md p-0">
-                    <div class="hn-section hn-section-brand">
-                        <div class="hn-item">
-                            <a id="hn-logo" class="hn-link" href="/">
-                                <span class="hn-content">
-                                    <span class="acmion-logo" style="font-weight: 600;">
-                                        CSharpWasmBenchmark
+                            <label class="hn-item hn-input hn-input-nav hn-hide-desktop" for="hn-nav-cb">
+                                <span class="hn-link">
+                                    <span class="hn-content">
+                                        <span class="hn-input-active ">
+                                            <i class="ri-close-line"></i>
+                                        </span>
+                                        <span class="hn-input-default">
+                                            <i class="ri-menu-line"></i>
+                                        </span>
                                     </span>
                                 </span>
-                            </a>
+                            </label>
+            
                         </div>
+                        <div class="hn-section hn-section-body">
+                            <div class="hn-spacer"></div>
 
-                        <div class="hn-spacer"></div>
-
-                        <label class="hn-item hn-input hn-input-nav hn-hide-desktop" for="hn-nav-cb">
-                            <span class="hn-link">
-                                <span class="hn-content">
-                                    <span class="hn-input-active ">
-                                        <i class="ri-close-line"></i>
+                            <div class="hn-item">
+                                <a class="hn-link" href="#home">
+                                    <span class="hn-content">
+                                        Home
                                     </span>
-                                    <span class="hn-input-default">
-                                        <i class="ri-menu-line"></i>
+                                </a>
+                            </div>
+                            <div class="hn-item">
+                                <a class="hn-link" href="#conclusions">
+                                    <span class="hn-content">
+                                        Conclusions
                                     </span>
-                                </span>
-                            </span>
-                        </label>
-
-                    </div>
-                    <div class="hn-section hn-section-body">
-                        <div class="hn-spacer"></div>
-
-                        <div class="hn-item">
-                            <a class="hn-link" href="#home">
-                                <span class="hn-content">
-                                    Home
-                                </span>
-                            </a>
-                        </div>
-                        <div class="hn-item">
-                            <a class="hn-link" href="#conclusions">
-                                <span class="hn-content">
-                                    Conclusions
-                                </span>
-                            </a>
-                        </div>
-                        <div class="hn-item">
-                            <a class="hn-link" href="#credits">
-                                <span class="hn-content">
-                                    Credits
-                                </span>
-                            </a>
-                        </div>
-                        <div class="hn-item">
-                            <a class="hn-link" href="#benchmarking-strategy">
-                                <span class="hn-content">
-                                    Benchmarking Strategy
-                                </span>
-                            </a>
-                        </div>
-                        <div class="hn-item">
-                            <a class="hn-link" href="#benchmarks">
-                                <span class="hn-content">
-                                    Benchmarks
-                                </span>
-                            </a>
-                        </div>
-                        <div class="hn-item">
-                            <a class="hn-link" href="https://github.com/Acmion/CSharpWasmBenchmark">
-                                <span class="hn-content">
-                                    GitHub
-                                </span>
-                            </a>
+                                </a>
+                            </div>
+                            <div class="hn-item">
+                                <a class="hn-link" href="#credits">
+                                    <span class="hn-content">
+                                        Credits
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="hn-item">
+                                <a class="hn-link" href="#benchmarking-strategy">
+                                    <span class="hn-content">
+                                        Benchmarking Strategy
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="hn-item">
+                                <a class="hn-link" href="#benchmarks">
+                                    <span class="hn-content">
+                                        Benchmarks
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="hn-item">
+                                <a class="hn-link" href="https://github.com/Acmion/CSharpWasmBenchmark">
+                                    <span class="hn-content">
+                                        GitHub
+                                    </span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+            
+                    <label class="hn-overlay" for="hn-nav-cb">
+                    </label>
+                </nav>
+            </header>
 
-                <label class="hn-overlay" for="hn-nav-cb">
-                </label>
-            </nav>
-        </header>
-
-        <div class="scroll-anchor-height"></div>
+            <div class="scroll-anchor-height"></div>
         <main class="container">
-
-            <h1 class="scroll-anchor" id="home">
-                CSharpWasmBenchmark - Results
-            </h1>
-
-            <p>
-                CSharpWasmBenchmark is a project that benchmarks the performance of C# when compiled to Webassembly.
-                The rationale behind this analysis is to find out whether it is viable to run performance critical applications
-                written in C# in the browser and how the browser performance differs from "native" performance.
-            </p>
-            <p>
-                The performance of the following are measured: C# Runtime, C# Wasm AOT, C# Wasm Interpreted
-                and JavaScript. The JavaScript code is directly translated (as well as possible) from the C# source code,
-                which may create certain differences between the implications of the code that is executed. You should
-                always compare the source codes! The comparison between the performance of different C# execution targets
-                are likely more reliable than that of comparison with JavaScript. JavaScript was included in this analysis
-                since currently it is the standard frontend development programming language.
-            </p>
-
-            <p>
-                <strong>Note:</strong> The benchmarks may have errors in them, the C# Wasm compilation may depend on
-                stuff that is no longer considered best practice, the tools used in C# Wasm compilation may not be
-                updated to their newest and best versions and the C# and JavaScript source codes may not be equivalent.
-                Additionally, since C# Wasm is still a somewhat experimental technology these results may not reflect the
-                performance of the finalized product.
-            </p>
-
-
-            <section>
-                <h2 class="scroll-anchor" id="conclusions">
-                    Conclusions
-                </h2>
-                <p>
-                    The performance of C# AOT compiled to Webassembly is significantly better than that of C# Wasm Interpreted.
-                    Generally the improvement in the featured benchmarks lies within the range <strong>2x - 5x</strong> better
-                    performance, but in some cases even a <strong>50x</strong> performance benefit can be seen.
-                </p>
-
-                <p>
-                    C# Runtime can in some cases perform over <strong>100x</strong> faster than C# Wasm AOT and generally the
-                    performance benefit of C# Runtime is about <strong>10x</strong>. However, the performance is almost on par
-                    with C# Wasm AOT when no abstractions or framework calls are utilized. See for example the C# Wasm AOT
-                    performance difference between ArraySortInt (uses Array.Sort) and ArraySortIntQuick (uses a custom quicksort
-                    implementation). The performance of ArraySortIntQuick is about <strong>20x</strong> better than that of
-                    ArraySortInt, even if they, in practice, do the same work. The performance difference between ArraySortInt
-                    and ArraySortIntQuick when executing under the C# Runtime is negligible.
-                </p>
-
-                <p>
-                    The equivalent code executed as JavaScript is generally <strong>3x - 10x</strong> faster than
-                    C# Wasm AOT. However, if the code avoids relying on framework methods and calls (for example
-                    ArraySortIntQuick, NewtonsMethodSecondDegree and NewtonsMethodThirdDegree) then the difference
-                    is almost negligible.
-                </p>
-
-                <p>
-                    Webassembly promises, more or less, that it can enable "native" performance within a browser. C# often
-                    runs within a virtual machine and can maybe thus not achieve the full potential of Wasm. However,
-                    the difference in performance between C# Runtime and C# Wasm AOT varies from benchmark to benchmark and
-                    does generally not live up to the promise of Webassembly. With the benchmarks and assumptions of this project
-                    the conclusion is that
-                    <strong>C# Wasm AOT still has a long way to become a general and performant client side web programming platform</strong>.
-                    Hopefully this changes in the future.
-                </p>
-            </section>
-
-
-            <section>
-                <h2 class="scroll-anchor" id="credits">
-                    Credits
-                </h2>
-
-                <p>
-                    This analysis was created by <a href="https://acmion.com">Acmion</a>.
-                </p>
-                <p>
-                    Contribute to CSharpWasmBenchmark in it's <a href="https://github.com/Acmion/CSharpWasmBenchmark">GitHub repository</a>.
-                    Consider leaving a like if you found this analysis useful, interesting or informative.
-                </p>
-                <p>
-                    Thanks to <a href="https://github.com/unoplatform/Uno.Wasm.Bootstrap">Uno.Wasm.Bootstrap</a>, a project that provides
-                    an understandable way of AOT compiling C# to Wasm that just works and has minimal dependencies.
-                </p>
-            </section>
-
-
-            <section>
-                <h2 class="scroll-anchor" id="benchmarking-strategy">
-                    Benchmarking Strategy
-                </h2>
-
-                <p>
-                    This section describes how the benchmarks are created and executed. All benchmarks are contained within some
-                    categories, for example, there is an <code>ArrayBenchmarks</code> and a <code>ListBenchmarks</code> category.
-                    BenchmarkDotNet was not utilized in this project, because I wanted to ensure that the C# and JavaScript code
-                    and benchmarks are doing the same things. Additionally, BenchmarkDotNet uses some complex compilation strategies,
-                    which may or may not work with C# Wasm AOT.
-                </p>
-
-                <section class="indent">
-                    <h3>
-                        C# Benchmarks
-                    </h3>
-                    <p>
-                        The source code of the C# benchmark executer can be found <a href="/Benchmarking/Core/BenchmarkRunner.cs">here</a>.
-                        The way a C# benchmark should be defined is:
-                    </p>
-                    <p>
-                    </p>
-                    <ol>
-                        <li>
-                            Create a C# class <code>SomeBenchmark</code>, which inherits from <code>Benchmark</code>.
-                        </li>
-                        <li>
-                            Override some describing properties.
-                        </li>
-                        <li>
-                            Override the <code>Parameters</code> property, which is of type <code>int[]</code>.
-                            <code>SomeBenchmark</code> is initialized and executed with each of the values of <code>Parameters</code>.
-                            This means that the performance of something can be evaulated with several parameter values. For example,
-                            if <code>Parameters = new int[] { 1, 10, 100, 1000 }</code> and <code>SomeBenchmark</code> sorts a list
-                            of numbers, then the analysis can be evaluated for a list of length 1, a list of length 10, a list of length
-                            100 and a list of length 1000.
-                        </li>
-                        <li>
-                            Override the <code>public void Initialize(int parameter)</code> method. The value of <code>parameter</code> is one
-                            value from the <code>Parameters</code> array. This method is used to initialize stuff needed for the
-                            benchmark, but the performance is not evaluated.
-                        </li>
-                        <li>
-                            Override the <code>public object Execute()</code> method. This method should execute the code that is to be
-                            benchmarked. The method returns an <code>object</code>, which main purpose should be to ensure that the compiler
-                            does not remove the code within the method. The performance of this method is evaluated.
-                        </li>
-                        <li>
-                            Register <code>SomeBenchmark</code> under a <code>BenchmarkCategory</code> in <code>Benchmarking/Core/BenchmarkCategory.cs</code>.
-                            Note that you may need to define an extra category.
-                        </li>
-                    </ol>
-                    <p></p>
-                </section>
-
-                <section class="indent">
-                    <h3>
-                        JavaScript Benchmarks
-                    </h3>
-                    <p>
-                        The source code of the JS benchmark executer can be found <a href="/Benchmarking/JavaScriptCore/BenchmarkRunner.js">here</a>.
-                        The way a JS benchmark should be defined is:
-                    </p>
-
-                    <p>
-                    </p>
-                    <ol>
-                        <li>
-                            Create a JavaScript class <code>SomeBenchmark</code>. Note that the class name should be the same
-                            as the C# class name.
-                        </li>
-                        <li>
-                            No need to override describing properties. The values from C# are dynamically injected wherever needed.
-                        </li>
-                        <li>
-                            No need to define a <code>Parameters</code> array. The value from C# is dynamically injected wherever needed.
-                        </li>
-                        <li>
-                            Define the <code>function Initialize(parameter)</code> function. The behavior should be the same as the C# equivalent.
-                            This performance is not evaluated.
-                        </li>
-                        <li>
-                            Define the <code>function Execute()</code> function. The behavior should be the same as the C# equivalent.
-                            This performance is evaluated.
-                        </li>
-                        <li>
-                            No need to register this class anywhere. It is dynamically injected wherever needed.
-                        </li>
-                    </ol>
-                    <p></p>
-                </section>
-
-                <section class="indent">
-                    <h3>
-                        Benchmark Plots
-                    </h3>
-                    <p>
-                        Each benchmark is executed a certain number of times for each parameter value. The mean execution times of these runs
-                        represent data points, while the standard deviations represent error bars.
-                    </p>
-                </section>
-            </section>
-
-            <section>
-                <h2 class="scroll-anchor" id="benchmarks">
-                    Benchmarks
-                </h2>
-
-                <div class="indent">
-                    <p>
-                        The benchmarks.
-                    </p>
-
-
-
-
-                    <div>
-                        <section>
-                            <h3 class="d-flex">
-                                ArrayBenchmarks
-                            </h3>
-                            <p>
-                                The benchmarks related to this category.
-                            </p>
-
-                            <div>
-
-                                <section class="indent">
-                                    <h4>
-                                        ArraySortInt
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates an array of random ints.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Sorts the array.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The middle value of the sorted array.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The length of the array that is sorted.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/ArraySortInt.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/ArraySortInt.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="ArraySortInt" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        ArraySortDouble
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates an array of random doubles.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Sorts the array.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The middle value of the sorted array.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The length of the array that is sorted.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/ArraySortDouble.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/ArraySortDouble.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="ArraySortDouble" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        ArraySortIntQuick
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates an array of random ints.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Sorts the array with a custom implemented Middle Point Pivot Quicksort <a href="https://github.com/TheAlgorithms/C-Sharp">(source)</a>.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The middle value of the sorted array.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The length of the array that is sorted.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/ArraySortIntQuick.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/ArraySortIntQuick.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="ArraySortIntQuick" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-                            </div>
-                        </section>
-
-                    </div>
-
-
-
-
-                    <div>
-                        <section>
-                            <h3 class="d-flex">
-                                ListBenchmarks
-                            </h3>
-                            <p>
-                                The benchmarks related to this category.
-                            </p>
-
-                            <div>
-
-                                <section class="indent">
-                                    <h4>
-                                        ListSortInt
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Sorts the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The middle value of the sorted list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The length of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/ListSortInt.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/ListSortInt.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="ListSortInt" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        ListSortDouble
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a list of random doubles.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Sorts the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The middle value of the sorted list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The length of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/ListSortDouble.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/ListSortDouble.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="ListSortDouble" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        ListInsert
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Inserts 20% more values to the beginning of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The middle value of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The length of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/ListInsert.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/ListInsert.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="ListInsert" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        ListDelete
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Deletes 20% of the values from the beginning of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The middle value of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The length of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/ListDelete.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/ListDelete.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="ListDelete" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-                            </div>
-                        </section>
-
-                    </div>
-
-
-
-
-                    <div>
-                        <section>
-                            <h3 class="d-flex">
-                                MathBenchmarks
-                            </h3>
-                            <p>
-                                The benchmarks related to this category.
-                            </p>
-
-                            <div>
-
-                                <section class="indent">
-                                    <h4>
-                                        SummationInt
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Sums each number of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The result of the summation.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of ints to sum.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/SummationInt.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/SummationInt.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="SummationInt" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        SummationDouble
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a list of random doubles.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Sums each number of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The result of the summation.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of doubles to sum.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/SummationDouble.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/SummationDouble.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="SummationDouble" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        MultiplicationInt
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Multiplies each number of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The result of the multiplication.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of ints to multiply.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/MultiplicationInt.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/MultiplicationInt.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="MultiplicationInt" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        MultiplicationDouble
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a list of random doubles.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Multiplies each number of the list.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The result of the multiplication.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of doubles to multiply.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/MultiplicationDouble.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/MultiplicationDouble.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="MultiplicationDouble" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        NewtonsMethodSecondDegree
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Solves a root of a second degree function with a certain number of iterations.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The found root.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of iterations.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="NewtonsMethodSecondDegree" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        NewtonsMethodThirdDegree
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Solves a root of a third degree function with a certain number of iterations.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The found root.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of iterations.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="NewtonsMethodThirdDegree" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-                            </div>
-                        </section>
-
-                    </div>
-
-
-
-
-                    <div>
-                        <section>
-                            <h3 class="d-flex">
-                                StringBenchmarks
-                            </h3>
-                            <p>
-                                The benchmarks related to this category.
-                            </p>
-
-                            <div>
-
-                                <section class="indent">
-                                    <h4>
-                                        StringConcatenation
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Concatenates a single character to a string a certain number of times.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The middle character of the concatenated string.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of characters to concatenate.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/StringConcatenation.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/StringConcatenation.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="StringConcatenation" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        StringConcatenationWithBuilder
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Concatenates a single character to a string a certain number of times using a StringBuilder.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The middle character of the concatenated string.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of characters to concatenate.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/StringConcatenationWithBuilder.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/StringConcatenationWithBuilder.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="StringConcatenationWithBuilder" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-                            </div>
-                        </section>
-
-                    </div>
-
-
-
-
-                    <div>
-                        <section>
-                            <h3 class="d-flex">
-                                DictionaryBenchmarks
-                            </h3>
-                            <p>
-                                The benchmarks related to this category.
-                            </p>
-
-                            <div>
-
-                                <section class="indent">
-                                    <h4>
-                                        DictionaryAccessInt
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a dictionary of random ints as keys with random ints as values.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Randomly accesses half of the keys and sums their respective values.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The sum of the values of the accessed keys.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of items in the dictionary.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/DictionaryAccessInt.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/DictionaryAccessInt.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="DictionaryAccessInt" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-
-                                <section class="indent">
-                                    <h4>
-                                        DictionaryAccessString
-                                    </h4>
-
-                                    <div class="mb-3">
-                                        <strong>Initialization Description</strong>:<br> Generates a dictionary of random strings as keys with random ints as values.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Benchmark Description</strong>:<br> Randomly accesses half of the keys and sums their respective values.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Result Description</strong>:<br> The sum of the values of the accessed keys.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Parameter Description</strong>:<br> The number of items in the dictionary.
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Source Code</strong>:<br>
-                                        <a href="/Benchmarking/Benchmarks/DictionaryAccessString.cs">C#</a>,
-                                        <a href="/Benchmarking/Benchmarks/DictionaryAccessString.js">JavaScript</a>
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Performance</strong>:
-                                        <div id="DictionaryAccessString" class="js-plotly-plot"></div>
-                                    </div>
-                                </section>
-                            </div>
-                        </section>
-
-                    </div>
-                </div>
-            </section>
-
-
-
-            <section id="static-content-helpers"></section>
-
-            <script>
-                var csRuntimeName = "CSharpRuntime";
-                var csWasmAotName = "CSharpWasmAot";
-                var csWasmInterpretedName = "CSharpWasmInterpreted";
-                var jsName = "JavaScript";
-
-                var dataFileUrls = ["/Benchmarking/Data/ArrayBenchmarks CS Runtime.json", "/Benchmarking/Data/ArrayBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/ArrayBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/ArrayBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks CS Runtime.json", "/Benchmarking/Data/DictionaryBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks CS Runtime.json", "/Benchmarking/Data/ListBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks CS Runtime.json", "/Benchmarking/Data/MathBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks CS Runtime.json", "/Benchmarking/Data/StringBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks JavaScript (Chrome 87.0.4280).json"];
-
-
-                async function plotData()
-                {
-                    for (var dfu of dataFileUrls)
-                    {
-                        var url = encodeURI(dfu);
-                        url = url.replace(/#/g, '%23');
-
-                        var jsonData = await fetch(url).then(response => response.text());
-
-                        BenchmarkDataPlotter.plotBenchmarkCategoryDataFromJson(jsonData, getLegend(dfu));
-                    }
-                }
-
-                function getLegend(url)
-                {
-                    url = url.replace(".json", "");
-                    var spaceIndex = url.indexOf(" ");
-
-                    return url.substring(spaceIndex);
-                }
-
-                function copyHtml()
-                {
-                    var headTemp = document.createElement("head");
-                    headTemp.innerHTML = document.head.innerHTML.replaceAll('src="/', 'src="/CSharpWasmBenchmark/wwwroot/').replaceAll('href="/', 'href="/CSharpWasmBenchmark/wwwroot/');
-
-                    var mainTemp = document.createElement("main");
-                    mainTemp.innerHTML = document.querySelector("body > main").innerHTML;
-
-                    var plotlyElements = mainTemp.querySelectorAll(".js-plotly-plot");
-                    var staticContentHelperElement = mainTemp.querySelector("#static-content-helpers");
-
-                    for (var pe of plotlyElements)
-                    {
-                        pe.innerHTML = "";
-                    }
-
-                    staticContentHelperElement.innerHTML = "";
-
-                    var header =
-                        `
+        
+<h1 class="scroll-anchor" id="home">
+    CSharpWasmBenchmark - Results
+</h1>
+
+<p>
+    CSharpWasmBenchmark is a project that benchmarks the performance of C# when compiled to Webassembly.
+    The rationale behind this analysis is to find out whether it is viable to run performance critical applications
+    written in C# in the browser and how the browser performance differs from "native" performance.
+</p>
+<p>
+    The performance of the following are measured: C# Runtime, C# Wasm AOT, C# Wasm Interpreted
+    and JavaScript. The JavaScript code is directly translated (as well as possible) from the C# source code,
+    which may create certain differences between the implications of the code that is executed. You should
+    always compare the source codes! The comparison between the performance of different C# execution targets
+    are likely more reliable than that of comparison with JavaScript. JavaScript was included in this analysis
+    since currently it is the standard frontend development programming language.
+</p>
+
+<p>
+    <strong>Note:</strong> The benchmarks may have errors in them, the C# Wasm compilation may depend on
+    stuff that is no longer considered best practice, the tools used in C# Wasm compilation may not be
+    updated to their newest and best versions and the C# and JavaScript source codes may not be equivalent.
+    Additionally, since C# Wasm is still a somewhat experimental technology these results may not reflect the
+    performance of the finalized product.
+</p>
+
+
+<section>
+    <h2 class="scroll-anchor" id="conclusions">
+        Conclusions
+    </h2>
+    <p>
+        The performance of C# AOT compiled to Webassembly is significantly better than that of C# Wasm Interpreted.
+        Generally the improvement in the featured benchmarks lies within the range <strong>2x - 5x</strong> better
+        performance, but in some cases even a <strong>50x</strong> performance benefit can be seen.
+    </p>
+
+    <p>
+        C# Runtime can in some cases perform over <strong>100x</strong> faster than C# Wasm AOT and generally the
+        performance benefit of C# Runtime is about <strong>10x</strong>. However, the performance is almost on par
+        with C# Wasm AOT when no abstractions or framework calls are utilized. See for example the C# Wasm AOT
+        performance difference between ArraySortInt (uses Array.Sort) and ArraySortIntQuick (uses a custom quicksort
+        implementation). The performance of ArraySortIntQuick is about <strong>20x</strong> better than that of
+        ArraySortInt, even if they, in practice, do the same work. The performance difference between ArraySortInt
+        and ArraySortIntQuick when executing under the C# Runtime is negligible.
+    </p>
+
+    <p>
+        The equivalent code executed as JavaScript is generally <strong>3x - 10x</strong> faster than
+        C# Wasm AOT. However, if the code avoids relying on framework methods and calls (for example
+        ArraySortIntQuick, NewtonsMethodSecondDegree and NewtonsMethodThirdDegree) then the difference
+        is almost negligible.
+    </p>
+
+    <p>
+        Webassembly promises, more or less, that it can enable "native" performance within a browser. C# often
+        runs within a virtual machine and can maybe thus not achieve the full potential of Wasm. However,
+        the difference in performance between C# Runtime and C# Wasm AOT varies from benchmark to benchmark and
+        does generally not live up to the promise of Webassembly. With the benchmarks and assumptions of this project
+        the conclusion is that
+        <strong>
+            C# Wasm AOT (at least when compiled with Uno.Wasm.Bootstrap) still has a long way to become a general and 
+            performant client side web programming platform. Note: The usage of the Uno.Wasm.Bootstrap toolchain may have 
+            affected the performance of some of the benchmarks. Thus, this analysis should not be regarded as a benchmark 
+            of the finalized product.
+        </strong>
+        Hopefully this changes in the future.
+    </p>
+</section>
+
+
+<section>
+    <h2 class="scroll-anchor" id="credits">
+        Credits
+    </h2>
+
+    <p>
+        This analysis was created by <a href="https://acmion.com">Acmion</a>.
+    </p>
+    <p>
+        Contribute to CSharpWasmBenchmark in it's <a href="https://github.com/Acmion/CSharpWasmBenchmark">GitHub repository</a>.
+        Consider leaving a like if you found this analysis useful, interesting or informative.
+    </p>
+    <p>
+        Thanks to <a href="https://github.com/unoplatform/Uno.Wasm.Bootstrap">Uno.Wasm.Bootstrap</a>, a project that provides
+        an understandable way of AOT compiling C# to Wasm that just works and has minimal dependencies.
+    </p>
+</section>
+
+
+<section>
+    <h2 class="scroll-anchor" id="benchmarking-strategy">
+        Benchmarking Strategy
+    </h2>
+
+    <p>
+        This section describes how the benchmarks are created and executed. All benchmarks are contained within some
+        categories, for example, there is an <code>ArrayBenchmarks</code> and a <code>ListBenchmarks</code> category.
+        BenchmarkDotNet was not utilized in this project, because I wanted to ensure that the C# and JavaScript code
+        and benchmarks are doing the same things. Additionally, BenchmarkDotNet uses some complex compilation strategies,
+        which may or may not work with C# Wasm AOT.
+    </p>
+
+    <section class="indent">
+        <h3>
+            C# Benchmarks
+        </h3>
+        <p>
+            The source code of the C# benchmark executer can be found <a href="/Benchmarking/Core/BenchmarkRunner.cs">here</a>.
+            The way a C# benchmark should be defined is:
+        </p>
+        <p>
+            </p><ol>
+                <li>
+                    Create a C# class <code>SomeBenchmark</code>, which inherits from <code>Benchmark</code>.
+                </li>
+                <li>
+                    Override some describing properties.
+                </li>
+                <li>
+                    Override the <code>Parameters</code> property, which is of type <code>int[]</code>.
+                    <code>SomeBenchmark</code> is initialized and executed with each of the values of <code>Parameters</code>.
+                    This means that the performance of something can be evaulated with several parameter values. For example,
+                    if <code>Parameters = new int[] { 1, 10, 100, 1000 }</code> and <code>SomeBenchmark</code> sorts a list
+                    of numbers, then the analysis can be evaluated for a list of length 1, a list of length 10, a list of length
+                    100 and a list of length 1000.
+                </li>
+                <li>
+                    Override the <code>public void Initialize(int parameter)</code> method. The value of <code>parameter</code> is one
+                    value from the <code>Parameters</code> array. This method is used to initialize stuff needed for the
+                    benchmark, but the performance is not evaluated.
+                </li>
+                <li>
+                    Override the <code>public object Execute()</code> method. This method should execute the code that is to be
+                    benchmarked. The method returns an <code>object</code>, which main purpose should be to ensure that the compiler
+                    does not remove the code within the method. The performance of this method is evaluated.
+                </li>
+                <li>
+                    Register <code>SomeBenchmark</code> under a <code>BenchmarkCategory</code> in <code>Benchmarking/Core/BenchmarkCategory.cs</code>.
+                    Note that you may need to define an extra category.
+                </li>
+            </ol>
+        <p></p>
+    </section>
+
+    <section class="indent">
+        <h3>
+            JavaScript Benchmarks
+        </h3>
+        <p>
+            The source code of the JS benchmark executer can be found <a href="/Benchmarking/JavaScriptCore/BenchmarkRunner.js">here</a>.
+            The way a JS benchmark should be defined is:
+        </p>
+
+        <p>
+            </p><ol>
+                <li>
+                    Create a JavaScript class <code>SomeBenchmark</code>. Note that the class name should be the same
+                    as the C# class name.
+                </li>
+                <li>
+                    No need to override describing properties. The values from C# are dynamically injected wherever needed.
+                </li>
+                <li>
+                    No need to define a <code>Parameters</code> array. The value from C# is dynamically injected wherever needed.
+                </li>
+                <li>
+                    Define the <code>function Initialize(parameter)</code> function. The behavior should be the same as the C# equivalent.
+                    This performance is not evaluated.
+                </li>
+                <li>
+                    Define the <code>function Execute()</code> function. The behavior should be the same as the C# equivalent.
+                    This performance is evaluated.
+                </li>
+                <li>
+                    No need to register this class anywhere. It is dynamically injected wherever needed.
+                </li>
+            </ol>
+        <p></p>
+    </section>
+
+    <section class="indent">
+        <h3>
+            Benchmark Plots
+        </h3>
+        <p>
+            Each benchmark is executed a certain number of times for each parameter value. The mean execution times of these runs
+            represent data points, while the standard deviations represent error bars.
+        </p>
+    </section>
+</section>
+
+<section>
+    <h2 class="scroll-anchor" id="benchmarks">
+        Benchmarks
+    </h2>
+
+    <div class="indent">
+        <p>
+            The benchmarks.
+        </p>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            ArrayBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        ArraySortInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates an array of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the array.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted array.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the array that is sorted.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ArraySortInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ArraySortInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ArraySortInt" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ArraySortDouble
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates an array of random doubles.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the array.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted array.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the array that is sorted.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ArraySortDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ArraySortDouble.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ArraySortDouble" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ArraySortIntQuick
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates an array of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the array with a custom implemented Middle Point Pivot Quicksort <a href="https://github.com/TheAlgorithms/C-Sharp">(source)</a>.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted array.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the array that is sorted.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ArraySortIntQuick.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ArraySortIntQuick.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ArraySortIntQuick" class="js-plotly-plot"></div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            ListBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        ListSortInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted list.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ListSortInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListSortInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ListSortInt" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ListSortDouble
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random doubles.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted list.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ListSortDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListSortDouble.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ListSortDouble" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ListInsert
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Inserts 20% more values to the beginning of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ListInsert.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListInsert.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ListInsert" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ListDelete
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Deletes 20% of the values from the beginning of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ListDelete.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListDelete.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ListDelete" class="js-plotly-plot"></div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            MathBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        SummationInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sums each number of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The result of the summation.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of ints to sum.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/SummationInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/SummationInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="SummationInt" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        SummationDouble
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random doubles.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sums each number of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The result of the summation.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of doubles to sum.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/SummationDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/SummationDouble.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="SummationDouble" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        MultiplicationInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Multiplies each number of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The result of the multiplication.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of ints to multiply.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/MultiplicationInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/MultiplicationInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="MultiplicationInt" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        MultiplicationDouble
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random doubles.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Multiplies each number of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The result of the multiplication.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of doubles to multiply.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/MultiplicationDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/MultiplicationDouble.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="MultiplicationDouble" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        NewtonsMethodSecondDegree
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> 
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Solves a root of a second degree function with a certain number of iterations.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The found root.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of iterations.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="NewtonsMethodSecondDegree" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        NewtonsMethodThirdDegree
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> 
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Solves a root of a third degree function with a certain number of iterations.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The found root.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of iterations.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="NewtonsMethodThirdDegree" class="js-plotly-plot"></div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            StringBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        StringConcatenation
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> 
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Concatenates a single character to a string a certain number of times.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle character of the concatenated string.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of characters to concatenate.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/StringConcatenation.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/StringConcatenation.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="StringConcatenation" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        StringConcatenationWithBuilder
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> 
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Concatenates a single character to a string a certain number of times using a StringBuilder.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle character of the concatenated string.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of characters to concatenate.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/StringConcatenationWithBuilder.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/StringConcatenationWithBuilder.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="StringConcatenationWithBuilder" class="js-plotly-plot"></div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            DictionaryBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        DictionaryAccessInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a dictionary of random ints as keys with random ints as values.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Randomly accesses half of the keys and sums their respective values.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The sum of the values of the accessed keys.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of items in the dictionary.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="DictionaryAccessInt" class="js-plotly-plot"></div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        DictionaryAccessString
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a dictionary of random strings as keys with random ints as values.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Randomly accesses half of the keys and sums their respective values.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The sum of the values of the accessed keys.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of items in the dictionary.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessString.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessString.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="DictionaryAccessString" class="js-plotly-plot"></div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+    </div>
+</section>
+
+
+
+<section id="static-content-helpers"></section>
+
+<script>
+    var csRuntimeName = "CSharpRuntime";
+    var csWasmAotName = "CSharpWasmAot";
+    var csWasmInterpretedName = "CSharpWasmInterpreted";
+    var jsName = "JavaScript";
+
+    var dataFileUrls = [ "/Benchmarking/Data/ArrayBenchmarks CS Runtime.json", "/Benchmarking/Data/ArrayBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/ArrayBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/ArrayBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks CS Runtime.json", "/Benchmarking/Data/DictionaryBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks CS Runtime.json", "/Benchmarking/Data/ListBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks CS Runtime.json", "/Benchmarking/Data/MathBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks CS Runtime.json", "/Benchmarking/Data/StringBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks JavaScript (Chrome 87.0.4280).json" ];
+
+
+    async function plotData()
+    {
+        for (var dfu of dataFileUrls)
+        {
+            var url = encodeURI(dfu);
+            url = url.replace(/#/g, '%23');
+
+            var jsonData = await fetch(url).then(response => response.text());
+
+            BenchmarkDataPlotter.plotBenchmarkCategoryDataFromJson(jsonData, getLegend(dfu));
+        }
+    }
+
+    function getLegend(url)
+    {
+        url = url.replace(".json", "");
+        var spaceIndex = url.indexOf(" ");
+
+        return url.substring(spaceIndex);
+    }
+
+    function copyHtml()
+    {
+        var headTemp = document.createElement("head");
+        headTemp.innerHTML = document.head.innerHTML.replaceAll('src="/', 'src="/CSharpWasmBenchmark/wwwroot/').replaceAll('href="/', 'href="/CSharpWasmBenchmark/wwwroot/');
+
+        var mainTemp = document.createElement("main");
+        mainTemp.innerHTML = document.querySelector("body > main").innerHTML;
+
+        var plotlyElements = mainTemp.querySelectorAll(".js-plotly-plot");
+        var staticContentHelperElement = mainTemp.querySelector("#static-content-helpers");
+
+        for (var pe of plotlyElements)
+        {
+            pe.innerHTML = "";
+        }
+
+        staticContentHelperElement.innerHTML = "";
+
+        var header =
+        `
             <header>
                 <nav class="hn-menu hn-top hn-fixed hn-shadow">
                     <input type="checkbox" name="hn-top-state" class="hn-input-state hn-input-state-nav hn-hide-desktop" id="hn-nav-cb">
@@ -1023,17 +1020,13 @@
             <div class="scroll-anchor-height"></div>
         `;
 
-                    var textArea = document.createElement('textarea');
-                    textArea.innerHTML = `<!DOCTYPE html><html><head>${headTemp.innerHTML}</head><body>${header}<main class="container">${mainTemp.innerHTML}</main><div style="height: 200px"></div></body></html>`;
-                    navigator.clipboard.writeText(textArea.value);
-                }
+        var textArea = document.createElement('textarea');
+        textArea.innerHTML = `<!DOCTYPE html><html><head>${headTemp.innerHTML}</head><body>${header}<main class="container">${mainTemp.innerHTML}</main><div style="height: 200px"></div></body></html>`;
+        navigator.clipboard.writeText(textArea.value);
+    }
 
-                plotData();
-            </script>
+    plotData();
+</script>
 
 
-        </main>
-        <div style="height: 200px"></div>
-    </body>
-
-</html>
+    </main><div style="height: 200px"></div></body></html>
