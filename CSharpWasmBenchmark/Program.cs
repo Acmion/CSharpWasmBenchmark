@@ -52,7 +52,7 @@ namespace CSharpWasmBenchmark
 
         public static string CSharpWasmAotDistUrl { get; } = CSharpWasmAotRootUrl + "/bin/" + BuildConfiguration + "/" + VersionDirectory + "/dist";
         public static string CSharpWasmInterpretedDistUrl { get; } = CSharpWasmInterpretedRootUrl + "/bin/" + BuildConfiguration + "/" + VersionDirectory + "/dist";
-        public static string CSharpWasmInterpretedBlazorDistUrl { get; } = CSharpWasmInterpretedBlazorRootUrl + "/bin/" + BuildConfiguration + "/" + VersionDirectory + "/publish/wwwroot";
+        public static string CSharpWasmInterpretedBlazorDistUrl { get; } = CSharpWasmInterpretedBlazorRootUrl + "/bin/" + BuildConfiguration + "/" + VersionDirectory + "/wwwroot";
 
         public static string CSharpWasmAotIndexHtmlUrl { get; } = CSharpWasmAotDistUrl + "/index.html";
         public static string CSharpWasmInterpretedIndexHtmlUrl { get; } = CSharpWasmInterpretedDistUrl + "/index.html";

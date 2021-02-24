@@ -22,6 +22,13 @@ namespace Benchmarking
 
             foreach (var benchmark in benchmarkCategory.Benchmarks)
             {
+                // Uncomment to make debugging faster.
+                // Or to fix Blazor Wasm Interpreted memory error.
+                //for (var i = 0; i < benchmark.Parameters.Length; i++)
+                //{
+                //    benchmark.Parameters[i] /= 10;
+                //}
+
                 var dataPoints = new List<BenchmarkExecuteDataPoint>(benchmark.Parameters.Length * IterationCount);
 
                 foreach (var parameter in benchmark.Parameters) 

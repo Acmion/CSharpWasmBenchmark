@@ -11,7 +11,18 @@
 </p>
 <p>
     The performance of the following are measured: C# Runtime, C# Wasm AOT, C# Wasm Interpreted
-    and JavaScript. The JavaScript code is directly translated (as well as possible) from the C# source code,
+    and JavaScript. 
+</p>
+<p>
+    The C# Wasm compilation is handled by Uno.Wasm.Bootstrap, which is using .NET 6
+    preview technology. However, this may have some implications on the performance. 
+    .NET Blazor Interpreted gave runtime memory errors and Blazor AOT is not yet implemented. 
+    However, a limited comparison between Uno Interpreted and Blazor Interpreted is contained
+    for some of the benchmakrs (prefixed with "Uno vs Blazor" in the plots). Generally, Uno is 
+    <strong>2x</strong> faster than Blazor, but in some benchmarks the performance is the same.
+</p>
+<p>
+    The JavaScript code is directly translated (as well as possible) from the C# source code,
     which may create certain differences between the implications of the code that is executed. You should
     always compare the source codes! The comparison between the performance of different C# execution targets
     are likely more reliable than that of comparison with JavaScript. JavaScript was included in this analysis
@@ -23,7 +34,7 @@
     stuff that is no longer considered best practice, the tools used in C# Wasm compilation may not be
     updated to their newest and best versions and the C# and JavaScript source codes may not be equivalent.
     Additionally, since C# Wasm is still a somewhat experimental technology these results may not reflect the
-    performance of the finalized product.
+    performance of the finalized product. 
 </p>
 
 
@@ -52,6 +63,15 @@
         C# Wasm AOT. However, if the code avoids relying on framework methods and calls (for example
         ArraySortIntQuick, NewtonsMethodSecondDegree and NewtonsMethodThirdDegree) then the difference
         is almost negligible.
+    </p>
+
+    <p>
+        The C# code was compiled with Uno.Wasm.Bootstrap, which uses .NET 6 preview tech. Uno Wasm interpreted is 
+        at best approximately <strong>2x</strong> faster than Blazor interpreted in the test which were performed.
+        In some cases the performance is the same. However,
+        Blazor interpreted gave runtime memory errors and as such the validity of this conclusion is quite uncertain.
+        Regardless, we can with some certainty say that the results of this analysis reflect the performance of Blazor
+        to some extent.
     </p>
 
     <p>
@@ -208,7 +228,24 @@
     </div>
 </section>
 
+<section>
+    <h2 class="scroll-anchor" id="un-vs-blazor-benchmarks">
+        Uno Wasm Interpreted vs Blazor Wasm Interpreted
+    </h2>
 
+    <div class="indent">
+        <p>
+            How does Uno.Wasm.Bootstrap compare to Blazor? Blazor does not yet support AOT 
+            and Blazor interpreted gives runtime memory errors for the full benchmarks. However,
+            this section contains some limited benchmarks to compare Uno Wasm interpreted and
+            Blazor Wasm interpreted.
+        </p>
+        @foreach (var bc in BenchmarkCategory.All)
+        {
+            <BenchmarkCategoryVisualizer BenchmarkCategory="bc" Interactive="false" />
+        }
+    </div>
+</section>
 
 <section id="static-content-helpers">
     <h2>
@@ -231,7 +268,6 @@
     var jsName = "@Program.JavaScriptName";
 
     var dataFileUrls = [ @(Html.Raw(string.Join(", ", Directory.GetFiles(Program.BenchmarkingDataPath + "/", "*.*", SearchOption.AllDirectories).Select(f => $@"""{f.Replace("\\", "/").Replace(Program.RootPath, "")}""")))) ];
-
 
     async function plotData()
     {
@@ -277,7 +313,7 @@
             <header>
                 <nav class="hn-menu hn-top hn-fixed hn-shadow">
                     <input type="checkbox" name="hn-top-state" class="hn-input-state hn-input-state-nav hn-hide-desktop" id="hn-nav-cb">
-            
+
                     <div class="hn-nav container-md p-0">
                         <div class="hn-section hn-section-brand">
                             <div class="hn-item">
@@ -289,7 +325,7 @@
                                     </span>
                                 </a>
                             </div>
-                        
+
                             <div class="hn-spacer"></div>
 
                             <label class="hn-item hn-input hn-input-nav hn-hide-desktop" for="hn-nav-cb">
@@ -304,7 +340,7 @@
                                     </span>
                                 </span>
                             </label>
-            
+
                         </div>
                         <div class="hn-section hn-section-body">
                             <div class="hn-spacer"></div>
@@ -353,7 +389,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <label class="hn-overlay" for="hn-nav-cb">
                     </label>
                 </nav>

@@ -23,7 +23,7 @@
             <header>
                 <nav class="hn-menu hn-top hn-fixed hn-shadow">
                     <input type="checkbox" name="hn-top-state" class="hn-input-state hn-input-state-nav hn-hide-desktop" id="hn-nav-cb">
-            
+
                     <div class="hn-nav container-md p-0">
                         <div class="hn-section hn-section-brand">
                             <div class="hn-item">
@@ -35,7 +35,7 @@
                                     </span>
                                 </a>
                             </div>
-                        
+
                             <div class="hn-spacer"></div>
 
                             <label class="hn-item hn-input hn-input-nav hn-hide-desktop" for="hn-nav-cb">
@@ -50,7 +50,7 @@
                                     </span>
                                 </span>
                             </label>
-            
+
                         </div>
                         <div class="hn-section hn-section-body">
                             <div class="hn-spacer"></div>
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <label class="hn-overlay" for="hn-nav-cb">
                     </label>
                 </nav>
@@ -119,7 +119,18 @@
 </p>
 <p>
     The performance of the following are measured: C# Runtime, C# Wasm AOT, C# Wasm Interpreted
-    and JavaScript. The JavaScript code is directly translated (as well as possible) from the C# source code,
+    and JavaScript. 
+</p>
+<p>
+    The C# Wasm compilation is handled by Uno.Wasm.Bootstrap, which is using .NET 6
+    preview technology. However, this may have some implications on the performance. 
+    .NET Blazor Interpreted gave runtime memory errors and Blazor AOT is not yet implemented. 
+    However, a limited comparison between Uno Interpreted and Blazor Interpreted is contained
+    for some of the benchmakrs (prefixed with "Uno vs Blazor" in the plots). Generally, Uno is 
+    <strong>2x</strong> faster than Blazor, but in some benchmarks the performance is the same.
+</p>
+<p>
+    The JavaScript code is directly translated (as well as possible) from the C# source code,
     which may create certain differences between the implications of the code that is executed. You should
     always compare the source codes! The comparison between the performance of different C# execution targets
     are likely more reliable than that of comparison with JavaScript. JavaScript was included in this analysis
@@ -131,7 +142,7 @@
     stuff that is no longer considered best practice, the tools used in C# Wasm compilation may not be
     updated to their newest and best versions and the C# and JavaScript source codes may not be equivalent.
     Additionally, since C# Wasm is still a somewhat experimental technology these results may not reflect the
-    performance of the finalized product.
+    performance of the finalized product. 
 </p>
 
 
@@ -160,6 +171,15 @@
         C# Wasm AOT. However, if the code avoids relying on framework methods and calls (for example
         ArraySortIntQuick, NewtonsMethodSecondDegree and NewtonsMethodThirdDegree) then the difference
         is almost negligible.
+    </p>
+
+    <p>
+        The C# code was compiled with Uno.Wasm.Bootstrap, which uses .NET 6 preview tech. Uno Wasm interpreted is 
+        at best approximately <strong>2x</strong> faster than Blazor interpreted in the test which were performed.
+        In some cases the performance is the same. However,
+        Blazor interpreted gave runtime memory errors and as such the validity of this conclusion is quite uncertain.
+        Regardless, we can with some certainty say that the results of this analysis reflect the performance of Blazor
+        to some extent.
     </p>
 
     <p>
@@ -878,7 +898,586 @@
     </div>
 </section>
 
+<section>
+    <h2 class="scroll-anchor" id="un-vs-blazor-benchmarks">
+        Uno Wasm Interpreted vs Blazor Wasm Interpreted
+    </h2>
 
+    <div class="indent">
+        <p>
+            How does Uno.Wasm.Bootstrap compare to Blazor? Blazor does not yet support AOT 
+            and Blazor interpreted gives runtime memory errors for the full benchmarks. However,
+            this section contains some limited benchmarks to compare Uno Wasm interpreted and
+            Blazor Wasm interpreted.
+        </p>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            ArrayBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        ArraySortInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates an array of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the array.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted array.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the array that is sorted.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ArraySortInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ArraySortInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ArraySortInt">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ArraySortDouble
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates an array of random doubles.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the array.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted array.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the array that is sorted.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ArraySortDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ArraySortDouble.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ArraySortDouble">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ArraySortIntQuick
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates an array of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the array with a custom implemented Middle Point Pivot Quicksort <a href="https://github.com/TheAlgorithms/C-Sharp">(source)</a>.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted array.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the array that is sorted.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ArraySortIntQuick.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ArraySortIntQuick.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ArraySortIntQuick">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            ListBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        ListSortInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted list.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ListSortInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListSortInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ListSortInt">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ListSortDouble
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random doubles.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sorts the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the sorted list.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ListSortDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListSortDouble.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ListSortDouble">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ListInsert
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Inserts 20% more values to the beginning of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ListInsert.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListInsert.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ListInsert">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        ListDelete
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Deletes 20% of the values from the beginning of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle value of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The length of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/ListDelete.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListDelete.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="ListDelete">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            MathBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        SummationInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sums each number of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The result of the summation.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of ints to sum.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/SummationInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/SummationInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="SummationInt">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        SummationDouble
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random doubles.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Sums each number of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The result of the summation.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of doubles to sum.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/SummationDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/SummationDouble.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="SummationDouble">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        MultiplicationInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random ints.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Multiplies each number of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The result of the multiplication.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of ints to multiply.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/MultiplicationInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/MultiplicationInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="MultiplicationInt">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        MultiplicationDouble
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a list of random doubles.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Multiplies each number of the list.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The result of the multiplication.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of doubles to multiply.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/MultiplicationDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/MultiplicationDouble.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="MultiplicationDouble">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        NewtonsMethodSecondDegree
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> 
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Solves a root of a second degree function with a certain number of iterations.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The found root.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of iterations.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="NewtonsMethodSecondDegree">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        NewtonsMethodThirdDegree
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> 
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Solves a root of a third degree function with a certain number of iterations.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The found root.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of iterations.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="NewtonsMethodThirdDegree">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            StringBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        StringConcatenation
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> 
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Concatenates a single character to a string a certain number of times.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle character of the concatenated string.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of characters to concatenate.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/StringConcatenation.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/StringConcatenation.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="StringConcatenation">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        StringConcatenationWithBuilder
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> 
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Concatenates a single character to a string a certain number of times using a StringBuilder.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The middle character of the concatenated string.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of characters to concatenate.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/StringConcatenationWithBuilder.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/StringConcatenationWithBuilder.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="StringConcatenationWithBuilder">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+            
+
+
+
+<div>
+    <section>
+        <h3 class="d-flex">
+            DictionaryBenchmarks
+        </h3>
+        <p>
+            The benchmarks related to this category.
+        </p>
+
+        <div>
+                
+<section class="indent">
+    <h4>
+        DictionaryAccessInt
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a dictionary of random ints as keys with random ints as values.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Randomly accesses half of the keys and sums their respective values.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The sum of the values of the accessed keys.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of items in the dictionary.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessInt.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="DictionaryAccessInt">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+                
+<section class="indent">
+    <h4>
+        DictionaryAccessString
+    </h4>
+
+    <div class="mb-3">
+        <strong>Initialization Description</strong>:<br> Generates a dictionary of random strings as keys with random ints as values.
+    </div>
+    <div class="mb-3">
+        <strong>Benchmark Description</strong>:<br> Randomly accesses half of the keys and sums their respective values.
+    </div>
+    <div class="mb-3">
+        <strong>Result Description</strong>:<br> The sum of the values of the accessed keys.
+    </div>
+    <div class="mb-3">
+        <strong>Parameter Description</strong>:<br> The number of items in the dictionary.
+    </div>
+    <div class="mb-3">
+        <strong>Source Code</strong>:<br>
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessString.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessString.js">JavaScript</a>
+    </div>
+    <div class="mb-3">
+        <strong>Performance</strong>: 
+        <div id="DictionaryAccessString">Run the benchmarks to inspect the performance.</div>
+    </div>
+</section>
+        </div>
+    </section>
+
+</div>
+    </div>
+</section>
 
 <section id="static-content-helpers"></section>
 
@@ -888,8 +1487,7 @@
     var csWasmInterpretedName = "CSharpWasmInterpreted";
     var jsName = "JavaScript";
 
-    var dataFileUrls = [ "/Benchmarking/Data/ArrayBenchmarks CS Runtime.json", "/Benchmarking/Data/ArrayBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/ArrayBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/ArrayBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks CS Runtime.json", "/Benchmarking/Data/DictionaryBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks CS Runtime.json", "/Benchmarking/Data/ListBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks CS Runtime.json", "/Benchmarking/Data/MathBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks CS Runtime.json", "/Benchmarking/Data/StringBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks JavaScript (Chrome 87.0.4280).json" ];
-
+    var dataFileUrls = [ "/Benchmarking/Data/ArrayBenchmarks CS Runtime.json", "/Benchmarking/Data/ArrayBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/ArrayBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/ArrayBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/ArrayBenchmarks Uno vs Blazor CS Wasm Interpreted (Chrome 88.0.4324).json", "/Benchmarking/Data/ArrayBenchmarks Uno vs Blazor CS Wasm Interpreted Blazor (Chrome 88.0.4324).json", "/Benchmarking/Data/DictionaryBenchmarks CS Runtime.json", "/Benchmarking/Data/DictionaryBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/DictionaryBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks CS Runtime.json", "/Benchmarking/Data/ListBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/ListBenchmarks Uno vs Blazor CS Wasm Interpreted (Chrome 88.0.4324).json", "/Benchmarking/Data/ListBenchmarks Uno vs Blazor CS Wasm Interpreted Blazor (Chrome 88.0.4324).json", "/Benchmarking/Data/MathBenchmarks CS Runtime.json", "/Benchmarking/Data/MathBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/MathBenchmarks JavaScript (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks CS Runtime.json", "/Benchmarking/Data/StringBenchmarks CS Wasm AOT (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks CS Wasm Interpreted (Chrome 87.0.4280).json", "/Benchmarking/Data/StringBenchmarks JavaScript (Chrome 87.0.4280).json" ];
 
     async function plotData()
     {
@@ -935,7 +1533,7 @@
             <header>
                 <nav class="hn-menu hn-top hn-fixed hn-shadow">
                     <input type="checkbox" name="hn-top-state" class="hn-input-state hn-input-state-nav hn-hide-desktop" id="hn-nav-cb">
-            
+
                     <div class="hn-nav container-md p-0">
                         <div class="hn-section hn-section-brand">
                             <div class="hn-item">
@@ -947,7 +1545,7 @@
                                     </span>
                                 </a>
                             </div>
-                        
+
                             <div class="hn-spacer"></div>
 
                             <label class="hn-item hn-input hn-input-nav hn-hide-desktop" for="hn-nav-cb">
@@ -962,7 +1560,7 @@
                                     </span>
                                 </span>
                             </label>
-            
+
                         </div>
                         <div class="hn-section hn-section-body">
                             <div class="hn-spacer"></div>
@@ -1011,7 +1609,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <label class="hn-overlay" for="hn-nav-cb">
                     </label>
                 </nav>
