@@ -20,6 +20,7 @@ namespace CSharpWasmBenchmark
         public static string CSharpRuntimeName { get; } = "CSharpRuntime";
         public static string CSharpWasmAotName { get; } = "CSharpWasmAot";
         public static string CSharpWasmInterpretedName { get; } = "CSharpWasmInterpreted";
+        public static string CSharpWasmInterpretedBlazorName { get; } = "CSharpWasmInterpretedBlazor";
         public static string CSharpWasmBenchmarkName { get; } = "CSharpWasmBenchmark";
         public static string JavaScriptName { get; } = "JavaScript";
 
@@ -33,19 +34,17 @@ namespace CSharpWasmBenchmark
         public static string CSharpRuntimeRootUrl { get; } = "/" + CSharpRuntimeName;
         public static string CSharpWasmAotRootUrl { get; } = "/" + CSharpWasmAotName;
         public static string CSharpWasmInterpretedRootUrl { get; } = "/" + CSharpWasmInterpretedName;
+        public static string CSharpWasmInterpretedBlazorRootUrl { get; } = "/" + CSharpWasmInterpretedBlazorName;
         public static string CSharpWasmBenchmarkAnalyzerRootUrl { get; } = "/";
 
         public static string RootPath { get; } = GetSolutionRootPath();
         public static string BenchmarkingPath { get; } = RootPath + BenchmarkingRootUrl;
-        public static string BenchmarkingDataPath { get; } = RootPath + BenchmarkingDataUrl;
-        public static string BenchmarkingDataCSharpRuntimePath { get; } = RootPath + BenchmarkingDataCSharpRuntimeUrl;
-        public static string BenchmarkingDataCSharpWasmAotPath { get; } = RootPath + BenchmarkingDataCSharpWasmAotUrl;
-        public static string BenchmarkingDataCSharpWasmInterpretedPath { get; } = RootPath + BenchmarkingDataCSharpWasmInterpretedUrl;
-        public static string BenchmarkingDataJavaScriptPath { get; } = RootPath + BenchmarkingDataJavaScriptUrl;
+        public static string BenchmarkingDataPath { get; } = BenchmarkingPath + "/Data";
 
         public static string CSharpRuntimePath { get; } = RootPath + CSharpRuntimeRootUrl;
         public static string CSharpWasmAotPath { get; } = RootPath + CSharpWasmAotRootUrl;
         public static string CSharpWasmInterpretedPath { get; } = RootPath + CSharpWasmInterpretedRootUrl;
+        public static string CSharpWasmInterpretedBlazorPath { get; } = RootPath + CSharpWasmInterpretedBlazorRootUrl;
         public static string CSharpWasmBenchmarkAnalyzerPath { get; } = RootPath + "/" + CSharpWasmBenchmarkName;
 
         public static bool IsDebug { get; } = GetIsDebug();
@@ -53,9 +52,11 @@ namespace CSharpWasmBenchmark
 
         public static string CSharpWasmAotDistUrl { get; } = CSharpWasmAotRootUrl + "/bin/" + BuildConfiguration + "/" + VersionDirectory + "/dist";
         public static string CSharpWasmInterpretedDistUrl { get; } = CSharpWasmInterpretedRootUrl + "/bin/" + BuildConfiguration + "/" + VersionDirectory + "/dist";
+        public static string CSharpWasmInterpretedBlazorDistUrl { get; } = CSharpWasmInterpretedBlazorRootUrl + "/bin/" + BuildConfiguration + "/" + VersionDirectory + "/publish/wwwroot";
 
         public static string CSharpWasmAotIndexHtmlUrl { get; } = CSharpWasmAotDistUrl + "/index.html";
         public static string CSharpWasmInterpretedIndexHtmlUrl { get; } = CSharpWasmInterpretedDistUrl + "/index.html";
+        public static string CSharpWasmInterpretedBlazorIndexHtmlUrl { get; } = CSharpWasmInterpretedBlazorDistUrl + "/index.html";
 
         public static string CSharpWasmAotIndexHtmlPath { get; } = RootPath + CSharpWasmAotIndexHtmlUrl;
         public static string CSharpWasmInterpretedIndexHtmlPath { get; } = RootPath + CSharpWasmInterpretedIndexHtmlUrl;
