@@ -1,0 +1,1 @@
+The JS code is called directly from CSharpWasmBenchmark, but is defined in Benchmarking.

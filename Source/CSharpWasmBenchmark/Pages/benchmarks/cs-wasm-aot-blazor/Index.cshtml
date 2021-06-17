@@ -1,0 +1,72 @@
+﻿@page
+
+<CshtmlHead>
+    <script>
+        var latestMessage = null;
+        var latestExtractedMessage = null;
+
+        onmessage = function (e)
+        {
+            latestMessage = e;
+        }
+
+        function sleep(ms)
+        {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function getNextMessage()
+        {
+            // Ugly way to fix this, but how else can we make sure that the functions below return a JSON?
+
+            while (latestMessage == latestExtractedMessage)
+            {
+                await sleep(100);
+            }
+
+            latestExtractedMessage = latestMessage;
+            return latestMessage;
+        }
+
+        async function waitUntilCanStartBenchmark()
+        {
+            // JS is single threaded. No need to wait for anything.
+        }
+    </script>
+
+    @foreach (var bc in BenchmarkCategory.All)
+    {
+        <script>
+            async function @(bc.Name)()
+            {
+                csWasmFrame.contentWindow.postMessage("@(bc.Name)");
+
+                var message = await getNextMessage();
+
+                return message.data;
+            }
+        </script>
+    }
+</CshtmlHead>
+
+
+<h1 class="d-flex">
+    C# Wasm AOT Blazor <BenchmarkCategoryBatchActions />
+</h1>
+
+<p>
+    C# Wasm AOT benchmarks.
+</p>
+
+@foreach (var bc in BenchmarkCategory.All)
+{
+    <BenchmarkCategoryVisualizer BenchmarkCategory="bc" />
+}
+
+<iframe class="d-none" src="@Program.CSharpWasmAotBlazorIndexHtmlUrl" id="cs-wasm-frame"></iframe>
+
+<CshtmlBody>
+    <script>
+        var csWasmFrame = document.getElementById("cs-wasm-frame");
+    </script>
+</CshtmlBody>
