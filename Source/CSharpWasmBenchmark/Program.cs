@@ -29,8 +29,8 @@ namespace CSharpWasmBenchmark
         public static string CSharpWasmInterpretedBlazorPath { get; } = RootPath + "../Implementations/CSharpWasmInterpretedBlazor";
 
         // Virtual URLs to the index.html files of the Blazor projects.
-        public static string CSharpWasmAotBlazorIndexHtmlUrl { get; } = "/CSharpWasmAotBlazor/bin/Release/net6.0/publish/wwwroot/index.html";
-        public static string CSharpWasmInterpretedBlazorIndexHtmlUrl { get; } = "/CSharpWasmInterpretedBlazor/bin/Release/net6.0/publish/wwwroot/index.html";
+        public static string CSharpWasmAotBlazorIndexHtmlUrl { get; } = "/CSharpWasmAotBlazor/bin/Release/net7.0/publish/wwwroot/index.html";
+        public static string CSharpWasmInterpretedBlazorIndexHtmlUrl { get; } = "/CSharpWasmInterpretedBlazor/bin/Release/net7.0/publish/wwwroot/index.html";
 
         public static void Main(string[] args)
         {
