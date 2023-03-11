@@ -1,4 +1,5 @@
 ﻿@page
+@using Benchmarking.Core
 
 <h1 class="scroll-anchor" id="home">
     CSharpWasmBenchmark - Results
@@ -282,6 +283,7 @@
     var csWasmAotName = "CS Wasm AOT";
     var csWasmInterpretedName = "CS Wasm Interpreted";
     var jsName = "JavaScript";
+    var cWasmName = "C Wasm";
 
     var dataFileUrls = [ @(Html.Raw(string.Join(", ", Directory.GetFiles(Program.DataPath + "/", "*.*", SearchOption.AllDirectories).Select(f => $@"""{f.Replace("\\", "/").Replace(Program.RootPath, "")}""")))) ];
 

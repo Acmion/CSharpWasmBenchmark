@@ -1,7 +1,4 @@
-﻿using Benchmarking.Benchmarks;
-using System;
-
-namespace Benchmarking
+﻿namespace Benchmarking.Core
 {
     public abstract class Benchmark
     {

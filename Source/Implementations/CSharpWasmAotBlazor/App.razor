@@ -1,4 +1,6 @@
-﻿<Router AppAssembly="@typeof(Program).Assembly">
+﻿@using System.Runtime.InteropServices
+@using Benchmarking.Core
+<Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
@@ -18,6 +20,11 @@
 
         var benchmarkCategory = args[0];
 
+        //ExecuteNewtonsMethodSecondDegree(3);
+        
         return BenchmarkRunner.RunBenchmarkCategoryToJson(BenchmarkCategory.All.First(bc => bc.Name == benchmarkCategory));
     }
+
+    [DllImport("NewtonsMethodSecondDegree")]
+    static extern double ExecuteNewtonsMethodSecondDegree(int n);
 }

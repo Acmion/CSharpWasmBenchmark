@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Benchmarking.Core;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Benchmarking.Benchmarks
 {
@@ -24,23 +22,23 @@ namespace Benchmarking.Benchmarks
             var n = (int)parameter;
 
             Random = new Random(n);
-            List = new List<int>(n / 1000);
+            List = new List<int>(n / 100);
 
             for (var i = 0; i < n / 100; i++)
             {
-                List.Add((int)(Random.NextDouble() * 100));
+                List.Add((Random.Next(0, 100)));
             }
         }
 
         public override object Execute()
         {
-            var res = 1;
+            var res = 0;
             var c = List.Count;
 
             for(var j = 0; j < 100; j++)
                 for (var i = 0; i < c; i++) 
                 {
-                    res *= List[i];
+                    res += List[i] * i;
                 }
 
             return res;

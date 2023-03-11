@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+	<!--<RunAOTCompilation>true</RunAOTCompilation>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Benchmarking\Benchmarking.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<NativeFileReference Include="Benchmarks\NewtonsMethodSecondDegree.c" />
+	<NativeFileReference Include="Benchmarks\NewtonsMethodThirdDegree.c" />
+	<NativeFileReference Include="Benchmarks\SummationInt.c" />
+	<NativeFileReference Include="Benchmarks\SummationDouble.c" />
+	<NativeFileReference Include="Benchmarks\MultiplicationInt.c" />
+	<NativeFileReference Include="Benchmarks\MultiplicationDouble.c" />
+	<NativeFileReference Include="Benchmarks\ArraySortInt.c" />
+	<NativeFileReference Include="Benchmarks\ArraySortDouble.c" />
+	<NativeFileReference Include="Benchmarks\ArraySortIntQuick.c" />
+	<NativeFileReference Include="Benchmarks\ListSortInt.c" />
+	<NativeFileReference Include="Benchmarks\ListSortDouble.c" />
+	<NativeFileReference Include="Benchmarks\ListInsert.c" />
+	<NativeFileReference Include="Benchmarks\ListDelete.c" />
+	<NativeFileReference Include="Benchmarks\StringConcatenation.c" />
+	<NativeFileReference Include="Benchmarks\StringConcatenationWithBuilder.c" />
+	<NativeFileReference Include="Benchmarks\DictionaryAccessInt.c" />
+	<NativeFileReference Include="Benchmarks\DictionaryAccessString.c" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

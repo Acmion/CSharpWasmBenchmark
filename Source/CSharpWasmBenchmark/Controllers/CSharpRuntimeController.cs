@@ -1,12 +1,8 @@
-﻿using Benchmarking;
-using Microsoft.AspNetCore.Http;
+﻿using System.Linq;
+using Benchmarking.Core;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace CSharpWasmBenchmark.Pages.cs_runtime.api
+namespace CSharpWasmBenchmark.Controllers
 {
     [Route("api/cs-runtime")]
     public class CSharpRuntimeController : Controller

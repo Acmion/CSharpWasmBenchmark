@@ -58,6 +58,7 @@ namespace CSharpWasmBenchmark
             ServeStaticFiles(app, Program.BenchmarkingPath, Program.BenchmarkingRootUrl);
             ServeStaticFiles(app, Program.CSharpWasmAotBlazorPath, Program.CSharpWasmAotBlazorRootUrl);
             ServeStaticFiles(app, Program.CSharpWasmInterpretedBlazorPath, Program.CSharpWasmInterpretedBlazorRootUrl);
+            ServeStaticFiles(app, Program.CWasmPath, Program.CWasmRootUrl);
 
             app.UseRouting();
 

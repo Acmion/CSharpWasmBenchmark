@@ -14,13 +14,13 @@
 
     Execute()
     {
-        var res = 1;
+        var res = 0;
         var c = this.List.length;
 
         for (var j = 0; j < 100; j++)
             for (var i = 0; i < c; i++) 
             {
-                res *= this.List[i];
+                res += this.List[i] * i;
             }
 
         return res;

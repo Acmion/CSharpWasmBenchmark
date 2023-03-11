@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Acmion.CshtmlComponent;
 using Benchmarking;
+using Benchmarking.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,6 +21,7 @@ namespace CSharpWasmBenchmark.Components
         public string Id => Benchmark.GetType().Name;
         public string CSharpSourceCodeUrl => Program.BenchmarkingRootUrl + "/Benchmarks/" + Id + ".cs";
         public string JavaScriptSourceCodeUrl => Program.BenchmarkingRootUrl + "/Benchmarks/" + Id + ".js";
+        public string CSourceCodeUrl => Program.CWasmRootUrl + "/Benchmarks/" + Id + ".c";
 
         public BenchmarkVisualizer(IHtmlHelper htmlHelper) : base(htmlHelper)
         {
