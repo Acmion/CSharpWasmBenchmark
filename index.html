@@ -111,10 +111,6 @@
 <h1 class="scroll-anchor" id="home">
     CSharpWasmBenchmark - Results
 </h1>
-<p>
-    <strong>Update:</strong> Blazor Wasm AOT has now been released in ASP.NET Core 6 Preview 4. This benchmark uses
-    that for AOT compilation.
-</p>
 
 <p>
     CSharpWasmBenchmark is a project that benchmarks the performance of C# when compiled to Webassembly.
@@ -123,10 +119,10 @@
 </p>
 <p>
     The performance of the following are measured: C# Runtime, C# Wasm AOT Blazor, C# Wasm Interpreted Blazor
-    and JavaScript. 
+    and JavaScript. This C# code has been compiled with .NET 7.
 </p>
 <p>
-    The C# Wasm compilation is still in a preview phase and improvements can probably be expected.
+    Improvements can probably be expected to C# Wasm in the future.
 </p>
 <p>
     The JavaScript code is directly translated (as well as possible) from the C# source code,
@@ -143,10 +139,6 @@
     the performance of the finalized product. 
 </p>
 <p>
-    The JavaScript implementations of some of the sorting benchmarks are slightly incorrect, since JavaScript's <code>sort</code>
-    does some strange string conversion. Maybe I'll update this sometime...
-</p>
-<p>
     Unfortunately Blazor Wasm threw some memory error for larger parameter values. I do not currently have the time to investigate 
     this and as such I just decreased the magnitude of the parameters. This caused certain C# runtime benchmarks to complete in "zero"
     time, or at least so fast that <code>Stopwatch</code> could not measure it. Do note that the executed code is just the same for 
@@ -157,25 +149,65 @@
     <h2 class="scroll-anchor" id="conclusions">
         Conclusions
     </h2>
+
+    <style>
+        #conclusions-table td:nth-child(2),
+        #conclusions-table td:nth-child(3),
+        #conclusions-table th:nth-child(2),
+        #conclusions-table th:nth-child(3) 
+        { 
+            text-align: end; 
+        }
+    </style>
+
+    <table class="table" id="conclusions-table" style="border: 1px solid #dee2e6">
+        <thead>
+            <tr>
+                <th>
+                    Platform
+                </th>
+                <th>
+                    Total Time Spent in Benchmarks (ms)
+                </th>
+                <th>
+                    Relative Performance
+                </th>
+            </tr>
+        </thead>
+        <tbody id="conclusions-table-body"><tr><td>C# Runtime</td><td>3594.64</td><td>1.00x</td></tr><tr><td>C# Wasm AOT</td><td>9664.37</td><td>2.69x</td></tr><tr><td>C# Wasm Interpreted</td><td>119290.68</td><td>33.19x</td></tr><tr><td>JavaScript</td><td>4501.80</td><td>1.25x</td></tr></tbody>
+    </table>
     <p>
-        The performance of C# AOT compiled to Webassembly is often significantly better than that of C# Wasm Interpreted.
-        Generally the improvement in the featured benchmarks lies within the range <strong>2x - 5x</strong> better
-        performance, but in some cases even a <strong>20x</strong> performance benefit can be seen. Strangely, sorting doubles 
-        seems to be slower with AOT code.
+        <strong>Table 1:</strong> The total time spent in all the benchmarks. 
+        This data can be interpreted to give some sort of an average estimate of how well the different
+        platforms perform. However, the performance depends on the parameter values. 
+        See the figures below for a more detailed overview.
     </p>
 
     <p>
-        C# Runtime can in some cases perform over <strong>30x</strong> (even be faster in certain cases,
-        but due to the "zero" time problem all values can not be calculated) faster than C# Wasm AOT. However, the 
+        The performance of C# AOT compiled to Webassembly is often significantly better than that of C# Wasm Interpreted.
+        Table 1 shows the total time spent in benchmarking each platform. Running the benchmarks in C# Wasm AOT takes approximately 
+        <strong>2.69x</strong> longer than in the C# runtime and running the benchmarks in C# Wasm Interpreted takes 
+        approximately <strong>33.19x</strong> longer than in the C# runtime.
+        These values are rough estimates and depend on parameter values. See more details in the figures below. 
+    </p>
+
+    <p>
+        Generally the performance improvement of AOT in the featured benchmarks lies within the range <strong>2x - 5x</strong>, 
+        but in some cases even a <strong>20x</strong> performance benefit can be seen. Strangely, for example, 
+        sorting doubles seems to be slightly slower with AOT code.
+    </p>
+
+    <p>
+        C# Runtime can in some cases perform over <strong>30x</strong> (even faster in certain cases) faster than C# Wasm AOT. However, the 
         performance is almost on par in some cases with C# Wasm AOT. Probably when no abstractions or framework calls
         are utilized. See for example the C# Wasm AOT performance difference between ArraySortInt (uses Array.Sort) and 
-        ArraySortIntQuick (uses a custom quicksort implementation). The performance of ArraySortIntQuick is about 
+        ArraySortIntQuick (uses a custom quicksort implementation). The performance of ArraySortIntQuick in C# Wasm AOT is about 
         <strong>20x</strong> better than that of ArraySortInt, even if they, in practice, do the same work. 
         The performance difference between ArraySortInt and ArraySortIntQuick when executing under the C# Runtime is negligible.
     </p>
 
     <p>
-        The equivalent code executed as JavaScript is generally <strong>15x</strong> faster than
+        The equivalent code executed as JavaScript is generally faster than
         C# Wasm AOT. However, if the code avoids relying on framework methods and calls (for example
         ArraySortIntQuick, NewtonsMethodSecondDegree and NewtonsMethodThirdDegree) then the difference
         is almost negligible.
@@ -185,10 +217,10 @@
         Webassembly promises, more or less, that it can enable "native" performance within a browser. C# often
         runs within a virtual machine and can maybe thus not achieve the full potential of Wasm. However,
         the difference in performance between C# Runtime and C# Wasm AOT varies from benchmark to benchmark and
-        does generally not live up to the promise of Webassembly. With the benchmarks and assumptions of this project
-        the conclusion is that
+        does generally not live up to the promise of Webassembly. Even JS is often faster than C# Wasm AOT. 
+        With the benchmarks and assumptions of this project the conclusion is that
         <strong>
-            C# Wasm AOT still has a long way to become a general and  performant client side web programming platform. 
+            C# Wasm AOT still has a long way to become a general and performant client side web programming platform. 
             Hopefully this changes in the future.
         </strong>
     </p>
@@ -201,11 +233,15 @@
     </h2>
 
     <p>
-        This analysis was created by <a href="https://acmion.com">Acmion</a>.
+        This analysis initially created by <a href="https://acmion.com">Acmion</a>.
     </p>
     <p>
         Contribute to CSharpWasmBenchmark in it's <a href="https://github.com/Acmion/CSharpWasmBenchmark">GitHub repository</a>.
         Consider leaving a like if you found this analysis useful, interesting or informative.
+    </p>
+    
+    <p>
+        Thanks to <a href="https://github.com/gabrielgt">gabrielgt</a> for his contributions in updating the project to .NET 7.
     </p>
     <p>
         Thanks to <a href="https://github.com/unoplatform/Uno.Wasm.Bootstrap">Uno.Wasm.Bootstrap</a>, a project that provides
@@ -233,7 +269,7 @@
             C# Benchmarks
         </h3>
         <p>
-            The source code of the C# benchmark executer can be found <a href="/Source/Implementations/Benchmarking/Core/BenchmarkRunner.cs">here</a>.
+            The source code of the C# benchmark executer can be found <a href="/Benchmarking/Core/BenchmarkRunner.cs">here</a>.
             The way a C# benchmark should be defined is:
         </p>
         <p>
@@ -275,7 +311,7 @@
             JavaScript Benchmarks
         </h3>
         <p>
-            The source code of the JS benchmark executer can be found <a href="/Source/Implementations/Benchmarking/JavaScriptCore/BenchmarkRunner.js">here</a>.
+            The source code of the JS benchmark executer can be found <a href="/Benchmarking/JavaScriptCore/BenchmarkRunner.js">here</a>.
             The way a JS benchmark should be defined is:
         </p>
 
@@ -360,8 +396,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ArraySortInt.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ArraySortInt.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/ArraySortInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ArraySortInt.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -388,8 +424,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ArraySortDouble.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ArraySortDouble.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/ArraySortDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ArraySortDouble.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -416,8 +452,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ArraySortIntQuick.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ArraySortIntQuick.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/ArraySortIntQuick.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ArraySortIntQuick.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -462,8 +498,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ListSortInt.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ListSortInt.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/ListSortInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListSortInt.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -490,8 +526,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ListSortDouble.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ListSortDouble.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/ListSortDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListSortDouble.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -518,8 +554,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ListInsert.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ListInsert.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/ListInsert.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListInsert.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -546,8 +582,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ListDelete.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/ListDelete.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/ListDelete.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/ListDelete.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -592,8 +628,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/SummationInt.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/SummationInt.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/SummationInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/SummationInt.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -620,8 +656,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/SummationDouble.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/SummationDouble.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/SummationDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/SummationDouble.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -648,8 +684,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/MultiplicationInt.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/MultiplicationInt.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/MultiplicationInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/MultiplicationInt.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -676,8 +712,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/MultiplicationDouble.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/MultiplicationDouble.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/MultiplicationDouble.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/MultiplicationDouble.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -704,8 +740,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodSecondDegree.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -732,8 +768,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/NewtonsMethodThirdDegree.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -778,8 +814,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/StringConcatenation.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/StringConcatenation.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/StringConcatenation.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/StringConcatenation.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -806,8 +842,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/StringConcatenationWithBuilder.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/StringConcatenationWithBuilder.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/StringConcatenationWithBuilder.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/StringConcatenationWithBuilder.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -852,8 +888,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/DictionaryAccessInt.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/DictionaryAccessInt.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessInt.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessInt.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -880,8 +916,8 @@
     </div>
     <div class="mb-3">
         <strong>Source Code</strong>:<br>
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/DictionaryAccessString.cs">C#</a>,
-        <a href="/Source/Implementations/Benchmarking/Benchmarks/DictionaryAccessString.js">JavaScript</a>
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessString.cs">C#</a>,
+        <a href="/Benchmarking/Benchmarks/DictionaryAccessString.js">JavaScript</a>
     </div>
     <div class="mb-3">
         <strong>Performance</strong>: 
@@ -895,7 +931,19 @@
     </div>
 </section>
 
-<section id="static-content-helpers" style="/* display: none; */"></section>
+<section id="static-content-helpers" style="display: none;">
+    <h2>
+        Static Content Helpers
+    </h2>
+
+    <p>
+        You can ignore this section. Just some helpers for creating the static website. 
+    </p>
+
+    <button onclick="copyHtml()">
+        Copy HTML
+    </button>
+</section>
 
 <script>
     var csRuntimeName = "CS Runtime";
@@ -903,7 +951,7 @@
     var csWasmInterpretedName = "CS Wasm Interpreted";
     var jsName = "JavaScript";
 
-    var dataFileUrls = [ "../../Data/ArrayBenchmarks CS Runtime.json", "../../Data/ArrayBenchmarks CS Wasm AOT Blazor (Chrome 91.0.4472).json", "../../Data/ArrayBenchmarks CS Wasm Interpreted Blazor (Chrome 91.0.4472).json", "../../Data/ArrayBenchmarks JavaScript (Chrome 91.0.4472).json", "../../Data/DictionaryBenchmarks CS Runtime.json", "../../Data/DictionaryBenchmarks CS Wasm AOT Blazor (Chrome 91.0.4472).json", "../../Data/DictionaryBenchmarks CS Wasm Interpreted Blazor (Chrome 91.0.4472).json", "../../Data/DictionaryBenchmarks JavaScript (Chrome 91.0.4472).json", "../../Data/ListBenchmarks CS Runtime.json", "../../Data/ListBenchmarks CS Wasm AOT Blazor (Chrome 91.0.4472).json", "../../Data/ListBenchmarks CS Wasm Interpreted Blazor (Chrome 91.0.4472).json", "../../Data/ListBenchmarks JavaScript (Chrome 91.0.4472).json", "../../Data/MathBenchmarks CS Runtime.json", "../../Data/MathBenchmarks CS Wasm AOT Blazor (Chrome 91.0.4472).json", "../../Data/MathBenchmarks CS Wasm Interpreted Blazor (Chrome 91.0.4472).json", "../../Data/MathBenchmarks JavaScript (Chrome 91.0.4472).json", "../../Data/StringBenchmarks CS Runtime.json", "../../Data/StringBenchmarks CS Wasm AOT Blazor (Chrome 91.0.4472).json", "../../Data/StringBenchmarks CS Wasm Interpreted Blazor (Chrome 91.0.4472).json", "../../Data/StringBenchmarks JavaScript (Chrome 91.0.4472).json" ];
+    var dataFileUrls = [ "../../Data/ArrayBenchmarks CS Runtime.json", "../../Data/ArrayBenchmarks CS Wasm AOT Blazor (Edge 110.0.1587).json", "../../Data/ArrayBenchmarks CS Wasm Interpreted Blazor (Edge 110.0.1587).json", "../../Data/ArrayBenchmarks JavaScript (Edge 110.0.1587).json", "../../Data/DictionaryBenchmarks CS Runtime.json", "../../Data/DictionaryBenchmarks CS Wasm AOT Blazor (Edge 110.0.1587).json", "../../Data/DictionaryBenchmarks CS Wasm Interpreted Blazor (Edge 110.0.1587).json", "../../Data/DictionaryBenchmarks JavaScript (Edge 110.0.1587).json", "../../Data/ListBenchmarks CS Runtime.json", "../../Data/ListBenchmarks CS Wasm AOT Blazor (Edge 110.0.1587).json", "../../Data/ListBenchmarks CS Wasm Interpreted Blazor (Edge 110.0.1587).json", "../../Data/ListBenchmarks JavaScript (Edge 110.0.1587).json", "../../Data/MathBenchmarks CS Runtime.json", "../../Data/MathBenchmarks CS Wasm AOT Blazor (Edge 110.0.1587).json", "../../Data/MathBenchmarks CS Wasm Interpreted Blazor (Edge 110.0.1587).json", "../../Data/MathBenchmarks JavaScript (Edge 110.0.1587).json", "../../Data/StringBenchmarks CS Runtime.json", "../../Data/StringBenchmarks CS Wasm AOT Blazor (Edge 110.0.1587).json", "../../Data/StringBenchmarks CS Wasm Interpreted Blazor (Edge 110.0.1587).json", "../../Data/StringBenchmarks JavaScript (Edge 110.0.1587).json" ];
 
     async function plotData()
     {
@@ -916,6 +964,86 @@
 
             BenchmarkDataPlotter.plotBenchmarkCategoryDataFromJson(jsonData, getLegend(dfu));
         }
+    }
+
+    async function fillTable()
+    {
+        // Get the ElapsedMilliseconds of all benchmarks and report the relative performance on this page.
+
+        var tbody = document.getElementById("conclusions-table-body");
+
+        var csRuntimeElapsedMs = [];
+        var csWasmAotElapsedMs = [];
+        var csWasmInterpretedElapsedMs = [];
+        var jsElapsedMs = [];
+
+        var csRuntimeTot = 0.0;
+        var csWasmAotTot = 0.0;
+        var csWasmInterpretedTot = 0.0;
+        var jsTot = 0.0;
+
+        for (var dfu of dataFileUrls)
+        {
+            var url = encodeURI(dfu);
+            url = url.replace(/#/g, '%23');
+
+            var jsonData = await fetch(url).then(response => response.text());
+            var data = JSON.parse(jsonData)
+
+            var mss = []
+            var tot = 0.0
+            for (var bid of data.BenchmarkInstanceData)
+            {
+                var ms = [];
+                var maxParameterValue = 0;
+                for (var dp of bid.DataPoints)
+                {
+                    ms.push(dp.ElapsedMilliseconds);
+
+                    /*
+                    if (dp.ParameterValue > maxParameterValue)
+                    {
+                        maxParameterValue = dp.ParameterValue;
+                        ms = [dp.ElapsedMilliseconds];
+                    }
+                    else if (dp.ParameterValue == maxParameterValue)
+                    {
+                        ms.push(dp.ElapsedMilliseconds);
+                    }
+                    */
+                }
+
+                mss.push(ms)
+                tot += ms.reduce((a, b) => a + b, 0.0)
+            }
+
+            if (url.includes("CS%20Runtime"))
+            {
+                csRuntimeElapsedMs.push(...mss)
+                csRuntimeTot += tot
+            }
+            else if (url.includes("CS%20Wasm%20AOT"))
+            {
+                csWasmAotElapsedMs.push(...mss)
+                csWasmAotTot += tot
+            }
+            else if (url.includes("CS%20Wasm%20Interpreted"))
+            {
+                csWasmInterpretedElapsedMs.push(...mss)
+                csWasmInterpretedTot += tot
+            }
+            else if (url.includes("JavaScript"))
+            {
+                jsElapsedMs.push(...mss)
+                jsTot += tot
+            }
+        }
+
+        tbody.innerHTML = ""
+        tbody.innerHTML += `<tr><td>C# Runtime</td><td>${csRuntimeTot.toFixed(2)}</td><td>${(csRuntimeTot / csRuntimeTot).toFixed(2)}x</td></tr>`
+        tbody.innerHTML += `<tr><td>C# Wasm AOT</td><td>${csWasmAotTot.toFixed(2)}</td><td>${(csWasmAotTot / csRuntimeTot).toFixed(2)}x</td></tr>`
+        tbody.innerHTML += `<tr><td>C# Wasm Interpreted</td><td>${csWasmInterpretedTot.toFixed(2)}</td><td>${(csWasmInterpretedTot / csRuntimeTot).toFixed(2)}x</td></tr>`
+        tbody.innerHTML += `<tr><td>JavaScript</td><td>${jsTot.toFixed(2)}</td><td>${(jsTot / csRuntimeTot).toFixed(2)}x</td></tr>`
     }
 
     function getLegend(url)
@@ -942,7 +1070,7 @@
             pe.innerHTML = "";
         }
 
-        staticContentHelperElement.innerHTML = "";
+        staticContentHelperElement.style.display = "none";
 
         var header =
         `
@@ -1039,6 +1167,7 @@
         navigator.clipboard.writeText(textArea.value);
     }
 
+    fillTable()
     plotData();
 </script>
 

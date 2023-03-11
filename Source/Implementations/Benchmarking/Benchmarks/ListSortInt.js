@@ -14,7 +14,13 @@
 
     Execute()
     {
-        this.List.sort();
+        // This code converts the numbers to strings first...
+        // this.List.sort();
+
+        this.List.sort(function(a, b) 
+        {
+            return a - b;
+        });
 
         return this.List[this.List.Count / 2];
     }

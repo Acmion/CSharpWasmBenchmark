@@ -30,7 +30,7 @@ namespace Benchmarking
         }
     }
 
-    public record BenchmarkExecuteDataPoint(object ParameterValue, long ElapsedMilliseconds, object Result) 
+    public record BenchmarkExecuteDataPoint(object ParameterValue, double ElapsedMilliseconds, object Result) 
     {
         public string ToJson() 
         {

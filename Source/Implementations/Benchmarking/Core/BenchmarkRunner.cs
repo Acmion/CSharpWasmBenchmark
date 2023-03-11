@@ -54,7 +54,7 @@ namespace Benchmarking
 
                         sw.Stop();
                         
-                        dataPoints.Add(new BenchmarkExecuteDataPoint(parameter, sw.ElapsedMilliseconds, res));
+                        dataPoints.Add(new BenchmarkExecuteDataPoint(parameter, sw.Elapsed.TotalMilliseconds, res));
                     }
                 }
 
