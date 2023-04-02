@@ -16,9 +16,7 @@
     public static async Task<string> RunBenchmarkCategory(string[] args)
     {
         await Task.Delay(0);
-
         var benchmarkCategoryName = args[0];
-
         return BenchmarkRunner.RunBenchmarkCategoryToJson(BenchmarkCategory.All.First(bc => bc.Name == benchmarkCategoryName));
     }
 }
