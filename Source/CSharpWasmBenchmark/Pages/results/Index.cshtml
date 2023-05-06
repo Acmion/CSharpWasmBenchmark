@@ -11,7 +11,7 @@
     written in C# in the browser and how the browser performance differs from "native" performance.
 </p>
 <p>
-    The performance of the following are measured: C# Runtime, C# Wasm AOT Blazor, C# Wasm Interpreted Blazor
+    The performance of the following are measured: C# Runtime, C# Wasm AOT Blazor, C# Wasm Interpreted Blazor, C Wasm
     and JavaScript. This C# code has been compiled with .NET 7.
 </p>
 <p>
@@ -26,15 +26,14 @@
 </p>
 
 <p>
-    <strong>Note:</strong> The benchmarks may have errors in them and the C# and JavaScript source codes may 
+    <strong>Note:</strong> The benchmarks may have errors in them and the source codes may 
     not be equivalent. However, the C# code is always executed from the same source and should thus be comparable. 
-    Additionally, since C# Wasm AOT is still a somewhat experimental technology these results may not reflect 
+    Additionally, since C# Wasm AOT and Wasm itself are still somewhat experimental technologies, these results may not reflect 
     the performance of the finalized product. 
 </p>
 <p>
     Unfortunately Blazor Wasm threw some memory error for larger parameter values. I do not currently have the time to investigate 
-    this and as such I just decreased the magnitude of the parameters. This caused certain C# runtime benchmarks to complete in "zero"
-    time, or at least so fast that <code>Stopwatch</code> could not measure it. Do note that the executed code is just the same for 
+    this and as such I just decreased the magnitude of the parameters. Note that the executed code is just the same for 
     C# runtime and both C# Blazor variants.
 </p>
 
@@ -136,7 +135,8 @@
     </p>
     
     <p>
-        Thanks to <a href="https://github.com/gabrielgt">gabrielgt</a> for his contributions in updating the project to .NET 7.
+        Thanks to <a href="https://github.com/gabrielgt">gabrielgt</a> for his contributions in updating the project to .NET 7 and 
+        the C Wasm implementation.
     </p>
     <p>
         Thanks to <a href="https://github.com/unoplatform/Uno.Wasm.Bootstrap">Uno.Wasm.Bootstrap</a>, a project that provides
@@ -310,11 +310,13 @@
         var csWasmAotElapsedMs = [];
         var csWasmInterpretedElapsedMs = [];
         var jsElapsedMs = [];
+        var cWasmElapsedMs = [];
 
         var csRuntimeTot = 0.0;
         var csWasmAotTot = 0.0;
         var csWasmInterpretedTot = 0.0;
         var jsTot = 0.0;
+        var cWasmTot = 0.0;
 
         for (var dfu of dataFileUrls)
         {
@@ -371,6 +373,11 @@
                 jsElapsedMs.push(...mss)
                 jsTot += tot
             }
+            else if (url.includes("C%20Wasm"))
+            {
+                cWasmElapsedMs.push(...mss)
+                cWasmTot += tot
+            }
         }
 
         tbody.innerHTML = ""
@@ -378,6 +385,7 @@
         tbody.innerHTML += `<tr><td>C# Wasm AOT</td><td>${csWasmAotTot.toFixed(2)}</td><td>${(csWasmAotTot / csRuntimeTot).toFixed(2)}x</td></tr>`
         tbody.innerHTML += `<tr><td>C# Wasm Interpreted</td><td>${csWasmInterpretedTot.toFixed(2)}</td><td>${(csWasmInterpretedTot / csRuntimeTot).toFixed(2)}x</td></tr>`
         tbody.innerHTML += `<tr><td>JavaScript</td><td>${jsTot.toFixed(2)}</td><td>${(jsTot / csRuntimeTot).toFixed(2)}x</td></tr>`
+        tbody.innerHTML += `<tr><td>C Wasm</td><td>${cWasmTot.toFixed(2)}</td><td>${(cWasmTot / csRuntimeTot).toFixed(2)}x</td></tr>`
     }
 
     function getLegend(url)
