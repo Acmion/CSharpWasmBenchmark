@@ -1,13 +1,9 @@
-﻿using Benchmarking.Benchmarks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using Benchmarking.Benchmarks;
 
-namespace Benchmarking
+namespace Benchmarking.Core
 {
-    public class BenchmarkCategory 
+    public class BenchmarkCategory : IBenchmarkCategory
     {
         public string Name { get; set; }
         public Benchmark[] Benchmarks { get; set; }

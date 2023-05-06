@@ -5,11 +5,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Data\JavaScript\" />
-      <Folder Include="Data\CSharpWasmInterpreted\" />
-      <Folder Include="Data\CSharpWasmAot\" />
-      <Folder Include="Data\NewFolder\" />
-    </ItemGroup>
-
 </Project>

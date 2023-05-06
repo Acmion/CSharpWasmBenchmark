@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Benchmarking
+namespace Benchmarking.Core
 {
     // NOTE: Using System.Text.Json threw some error when using AOT.
 
@@ -34,7 +32,7 @@ namespace Benchmarking
     {
         public string ToJson() 
         {
-            return $@"{{ ""{nameof(ParameterValue)}"": {ParameterValue}, ""{nameof(ElapsedMilliseconds)}"": {ElapsedMilliseconds}, ""{nameof(Result)}"": ""{Result}"" }}";
+            return $@"{{ ""{nameof(ParameterValue)}"": {ParameterValue}, ""{nameof(ElapsedMilliseconds)}"": {ElapsedMilliseconds.ToString(CultureInfo.InvariantCulture)}, ""{nameof(Result)}"": ""{Result}"" }}";
         }
     }
 }

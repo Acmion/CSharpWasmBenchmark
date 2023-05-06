@@ -21,16 +21,25 @@ namespace CSharpWasmBenchmark
         public static string BenchmarkingRootUrl { get; } = "/Benchmarking";
         public static string CSharpWasmAotBlazorRootUrl { get; } = "/CSharpWasmAotBlazor";
         public static string CSharpWasmInterpretedBlazorRootUrl { get; } = "/CSharpWasmInterpretedBlazor";
+        public static string CWasmRootUrl { get; } = "/CWasm";
 
         // Actual file paths. The virtual URLs will be mapped to these.
         public static string DataPath { get; } = RootPath + "../../Data";
         public static string BenchmarkingPath { get; } = RootPath + "../Implementations/Benchmarking";
         public static string CSharpWasmAotBlazorPath { get; } = RootPath + "../Implementations/CSharpWasmAotBlazor";
         public static string CSharpWasmInterpretedBlazorPath { get; } = RootPath + "../Implementations/CSharpWasmInterpretedBlazor";
+        public static string CWasmPath { get; } = RootPath + "../Implementations/CWasm";
 
         // Virtual URLs to the index.html files of the Blazor projects.
-        public static string CSharpWasmAotBlazorIndexHtmlUrl { get; } = "/CSharpWasmAotBlazor/bin/Release/net7.0/publish/wwwroot/index.html";
-        public static string CSharpWasmInterpretedBlazorIndexHtmlUrl { get; } = "/CSharpWasmInterpretedBlazor/bin/Release/net7.0/publish/wwwroot/index.html";
+        #if DEBUG
+            public static string Configuration { get; } = "Debug";
+        #else
+            public static string Configuration { get; } = "Release";
+        #endif
+
+        public static string CSharpWasmAotBlazorIndexHtmlUrl { get; } = $"/CSharpWasmAotBlazor/bin/{Configuration}/net7.0/publish/wwwroot/index.html";
+        public static string CSharpWasmInterpretedBlazorIndexHtmlUrl { get; } = $"/CSharpWasmInterpretedBlazor/bin/{Configuration}/net7.0/publish/wwwroot/index.html";
+        public static string CWasmIndexHtmlUrl { get; } = $"/CWasm/bin/{Configuration}/net7.0/publish/wwwroot/index.html";
 
         public static void Main(string[] args)
         {

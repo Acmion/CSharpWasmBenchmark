@@ -1,4 +1,5 @@
-﻿<Router AppAssembly="@typeof(Program).Assembly">
+﻿@using Benchmarking.Core
+<Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
@@ -15,9 +16,7 @@
     public static async Task<string> RunBenchmarkCategory(string[] args)
     {
         await Task.Delay(0);
-
-        var benchmarkCategory = args[0];
-
-        return BenchmarkRunner.RunBenchmarkCategoryToJson(BenchmarkCategory.All.First(bc => bc.Name == benchmarkCategory));
+        var benchmarkCategoryName = args[0];
+        return BenchmarkRunner.RunBenchmarkCategoryToJson(BenchmarkCategory.All.First(bc => bc.Name == benchmarkCategoryName));
     }
 }
