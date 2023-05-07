@@ -398,11 +398,18 @@
 
     function copyHtml()
     {
+        console.log("copy start")
+
         var headTemp = document.createElement("head");
         headTemp.innerHTML = document.head.innerHTML.replaceAll('src="/', 'src="/Source/CSharpWasmBenchmark/wwwroot/').replaceAll('href="/', 'href="/Source/CSharpWasmBenchmark/wwwroot/');
 
         var mainTemp = document.createElement("main");
         mainTemp.innerHTML = document.querySelector("body > main").innerHTML;
+
+        for(var a of mainTemp.querySelectorAll(".source-code-url-anchor"))
+        {
+            a.href = "./Source/Implementations/" + a.getAttribute("href");
+        }
 
         var plotlyElements = mainTemp.querySelectorAll(".js-plotly-plot");
         var staticContentHelperElement = mainTemp.querySelector("#static-content-helpers");
@@ -507,6 +514,8 @@
         var textArea = document.createElement('textarea');
         textArea.innerHTML = `<!DOCTYPE html><html><head>${headTemp.innerHTML}</head><body>${header}<main class="container">${mainTemp.innerHTML}</main><div style="height: 200px"></div></body></html>`;
         navigator.clipboard.writeText(textArea.value);
+
+        console.log("copy end")
     }
 
     fillTable()
